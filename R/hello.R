@@ -71,7 +71,12 @@ getSample <- function(SRS){
   sampleList <- listSamples()
   SRS <- match.arg(SRS, choices = sampleList$SRS)
   sampleList <- sampleList[sampleList$SRS %in% SRS,]
-
+  tempFile <- tempfile()
+  download.file(paste0("https://panglaodb.se/data_dl.php?sra=",sampleList[1],"&srs=",sampleList[2],"&filetype=R&datatype=readcounts"), destfile = tempFile, method = "curl")
+  tempFile <- suppressWarnings(try(load(tempFile), silent = TRUE))
+  if(class(tempFile) == 'try-error'){
+    return(tempFile)
+  }
 }
 
 cellList <- getCellTypes(Specie = 'H', Protocol = '10x')
