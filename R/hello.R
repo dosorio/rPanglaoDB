@@ -69,17 +69,55 @@ summarizeReport <- function(X, by='Cell Type'){
 
 getSample <- function(SRS){
   sampleList <- listSamples()
-  SRS <- match.arg(SRS, choices = sampleList$SRS)
+  SRS <- match.arg(SRS, choices = sampleList$SRS, several.ok = TRUE)
   sampleList <- sampleList[sampleList$SRS %in% SRS,]
-  tempFile <- tempfile()
-  download.file(paste0("https://panglaodb.se/data_dl.php?sra=",sampleList[1],"&srs=",sampleList[2],"&filetype=R&datatype=readcounts"), destfile = tempFile, method = "curl")
-  tempFile <- suppressWarnings(try(load(tempFile), silent = TRUE))
-  if(class(tempFile) == 'try-error'){
-    return(tempFile)
-  }
+  dataSets <- apply(sampleList,1, function(X){
+    load(url(paste0("https://panglaodb.se/data_dl.php?sra=",X[1],"&srs=",X[2],"&filetype=R&datatype=readcounts")))
+    gList <- rownames(sm)
+    rownames(sm) <- unlist(lapply(strsplit(gList, '-ENS|_ENS'), function(X){X[1]}))
+    sm <- sm[rowSums(sm) > 0,]
+    cNames <- getCellTypes(SRS = as.character(X[2]))
+    rownames(cNames) <- cNames$Cluster
+    tempFile <- tempfile()
+    cClusters <- read.table(paste0('https://panglaodb.se/data_dl.php?sra=',X[1],'&srs=',X[2],'&datatype=clusters&filetype=txt'), row.names = 1)
+    sm <- sm[,colnames(sm) %in% rownames(cClusters)]
+    cClusters <- cClusters[colnames(sm),]
+    names(cClusters) <- colnames(sm)
+    sm <- suppressWarnings(Seurat::CreateSeuratObject(sm, project = as.character(X[2])))
+    cellTypes <- cNames[as.character(cClusters),]$`Cell Type`
+    names(cellTypes) <- colnames(sm)
+    sm$CellTypes <- cellTypes
+    sm$panglaoCluster <- as.character(cClusters)
+    return(sm)
+  })
+  names(dataSets) <- SRS
+  return(dataSets)
 }
 
-cellList <- getCellTypes(Specie = 'H', Protocol = '10x')
-summaryList <- summarizeReport(cellList)
-summaryList
 sampleList <- listSamples()
+cellList <- getCellTypes(Specie = 'M', Protocol = '10x')
+
+
+cellList <- cellList[cellList$`Cell Type` %in% c('Microglia', 'Kupffer cells', 'Alveolar macrophages'),]
+summaryList <- summarizeReport(cellList,'SRS')
+summaryList <- summaryList[order(summaryList$Cells, decreasing = TRUE),]
+summaryList
+
+experimentList <- getSample(summaryList$SRS[c(1:15)])
+experimentList <- lapply(experimentList, function(X){
+  subset(X, cells = names(X$orig.ident[X$CellTypes %in% c('Microglia', 'Kupffer cells', 'Alveolar macrophages')]))
+})
+for(i in seq_along(experimentList)[-1]){
+  experimentList[[1]] <- merge(experimentList[[1]], experimentList[[i]])
+}
+experimentList <- experimentList[[1]]
+experimentList <- NormalizeData(experimentList)
+experimentList <- FindVariableFeatures(experimentList)
+experimentList <- ScaleData(experimentList, features = VariableFeatures(experimentList))
+experimentList <- RunPCA(experimentList, verbose = FALSE)
+experimentList <- harmony::RunHarmony(experimentList, 'orig.ident', max.iter.harmony = 100, max.iter.cluster = 20)
+experimentList <- RunUMAP(experimentList, reduction = 'harmony', dims = 1:10)
+Idents(experimentList) <- experimentList$orig.ident
+UMAPPlot(experimentList)
+Idents(experimentList) <- experimentList$CellTypes
+UMAPPlot(experimentList)
