@@ -1,8 +1,8 @@
-#' @export listSamples
+#' @export getSampleList
 #' @importFrom XML readHTMLTable
 #' @title Get the sample list from the panglaoDB database.
 
-listSamples <- function() {
+getSampleList <- function() {
   tempFile <- tempfile()
   xml2::download_html('https://panglaodb.se/samples.html', file = tempFile)
   sampleList <- XML::readHTMLTable(tempFile)

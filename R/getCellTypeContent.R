@@ -1,4 +1,4 @@
-#' @export getCellTypes
+#' @export getCellTypeContent
 #' @importFrom XML readHTMLTable
 #' @importFrom xml2 download_html
 #' @importFrom pbapply pbapply
@@ -10,10 +10,10 @@
 #' @param specie A
 #' @param verbose A
 #'
-getCellTypes <- function(sra = 'All', srs = 'All', tissue = 'All', protocol = 'All', specie = 'All', verbose = TRUE){
+getCellTypeContent <- function(sra = 'All', srs = 'All', tissue = 'All', protocol = 'All', specie = 'All', verbose = TRUE){
 
   # SampleList
-  sampleList <- listSamples()
+  sampleList <- getSampleList()
 
   # Filters
   SRA <- match.arg(arg = sra, choices = unique(c('All',sampleList$SRA)))
