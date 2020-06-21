@@ -1,5 +1,3 @@
-#' @export summarizeReport
-#'
 summarizeReport <- function(X, by='Cell Type'){
   nCells <- lapply(unique(X[,by]), function(Category){
     data.frame(Category, sum(X[X[,by] %in% Category,]$Cells))

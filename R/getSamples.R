@@ -1,10 +1,11 @@
 #' @export getSamples
 #' @importFrom utils read.table
 #' @importFrom Seurat CreateSeuratObject
-#'
-getSamples <- function(SRS){
+#' @title Download the expression matrix and annotations from the panglaoDB database.
+#' @param srs A
+getSamples <- function(srs){
   sampleList <- listSamples()
-  SRS <- match.arg(SRS, choices = sampleList$SRS, several.ok = TRUE)
+  SRS <- match.arg(srs, choices = sampleList$SRS, several.ok = TRUE)
   sampleList <- sampleList[sampleList$SRS %in% SRS,]
   dataSets <- apply(sampleList,1, function(X){
     load(url(paste0("https://panglaodb.se/data_dl.php?sra=",X[1],"&srs=",X[2],"&filetype=R&datatype=readcounts")))

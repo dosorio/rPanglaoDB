@@ -1,5 +1,6 @@
 #' @export listSamples
 #' @importFrom XML readHTMLTable
+#' @title Get the sample list from the panglaoDB database.
 
 listSamples <- function() {
   tempFile <- tempfile()

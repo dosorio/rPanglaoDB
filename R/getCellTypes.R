@@ -2,7 +2,14 @@
 #' @importFrom XML readHTMLTable
 #' @importFrom xml2 download_html
 #' @importFrom pbapply pbapply
-
+#' @title Get the cell-type content for each sample from the panglaoDB database.
+#' @param sra A
+#' @param srs A
+#' @param tissue A
+#' @param protocol A
+#' @param specie A
+#' @param verbose A
+#'
 getCellTypes <- function(sra = 'All', srs = 'All', tissue = 'All', protocol = 'All', specie = 'All', verbose = TRUE){
 
   # SampleList
