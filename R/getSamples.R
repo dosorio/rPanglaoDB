@@ -1,5 +1,8 @@
 #' @export getSamples
-getSamples <- function(SRS, cellType = 'All', QC = TRUE){
+#' @importFrom utils read.table
+#' @importFrom Seurat CreateSeuratObject
+#'
+getSamples <- function(SRS){
   sampleList <- listSamples()
   SRS <- match.arg(SRS, choices = sampleList$SRS, several.ok = TRUE)
   sampleList <- sampleList[sampleList$SRS %in% SRS,]
@@ -8,10 +11,10 @@ getSamples <- function(SRS, cellType = 'All', QC = TRUE){
     gList <- rownames(sm)
     rownames(sm) <- unlist(lapply(strsplit(gList, '-ENS|_ENS'), function(X){X[1]}))
     sm <- sm[rowSums(sm) > 0,]
-    cNames <- getCellTypes(SRS = as.character(X[2]))
+    cNames <- getCellTypes(srs = as.character(X[2]))
     rownames(cNames) <- cNames$Cluster
     tempFile <- tempfile()
-    cClusters <- read.table(paste0('https://panglaodb.se/data_dl.php?sra=',X[1],'&srs=',X[2],'&datatype=clusters&filetype=txt'), row.names = 1)
+    cClusters <- utils::read.table(paste0('https://panglaodb.se/data_dl.php?sra=',X[1],'&srs=',X[2],'&datatype=clusters&filetype=txt'), row.names = 1)
     sm <- sm[,colnames(sm) %in% rownames(cClusters)]
     cClusters <- cClusters[colnames(sm),]
     names(cClusters) <- colnames(sm)

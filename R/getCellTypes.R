@@ -1,5 +1,7 @@
 #' @export getCellTypes
-#'
+#' @importFrom XML readHTMLTable
+#' @importFrom xml2 download_html
+#' @importFrom pbapply pbapply
 
 getCellTypes <- function(sra = 'All', srs = 'All', tissue = 'All', protocol = 'All', specie = 'All', verbose = TRUE){
 

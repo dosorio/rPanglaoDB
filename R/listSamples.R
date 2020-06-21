@@ -1,5 +1,5 @@
 #' @export listSamples
-#'
+#' @importFrom XML readHTMLTable
 
 listSamples <- function() {
   tempFile <- tempfile()
