@@ -3,6 +3,7 @@
 export(getCellTypeContent)
 export(getSampleList)
 export(getSamples)
+import(Matrix)
 importFrom(Seurat,CreateSeuratObject)
 importFrom(XML,readHTMLTable)
 importFrom(pbapply,pbapply)
