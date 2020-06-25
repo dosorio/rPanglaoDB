@@ -16,11 +16,11 @@ getCellTypeContent <- function(sra = 'All', srs = 'All', tissue = 'All', protoco
   sampleList <- getSampleList()
 
   # Filters
-  SRA <- match.arg(arg = sra, choices = unique(c('All',sampleList$SRA)))
+  SRA <- match.arg(arg = sra, choices = unique(c('All',sampleList$SRA)), several.ok = TRUE)
   if(isTRUE('All' %in% SRA)){
     SRA <- unique(sampleList$SRA)
   }
-  SRS <- match.arg(arg = srs, choices = unique(c('All',sampleList$SRS)))
+  SRS <- match.arg(arg = srs, choices = unique(c('All',sampleList$SRS)), several.ok = TRUE)
   if(isTRUE('All' %in% SRS)){
     SRS <- unique(sampleList$SRS)
   }
@@ -52,39 +52,27 @@ getCellTypeContent <- function(sra = 'All', srs = 'All', tissue = 'All', protoco
   }
 
   # List download
-  if(isTRUE(verbose)){
-    cellList <- pbapply::pbapply(sampleList,1,function(X){
-      htmlFile <- paste0('https://panglaodb.se/list_clusters_and_cell_types.html?sra=',X[1],'&srs=',X[2])
-      tempFile <- tempfile()
-      xml2::download_html(htmlFile, tempFile)
-      tempFile <- try(XML::readHTMLTable(tempFile)[[1]], silent = TRUE)
-      tempFile <- try(data.frame(as.vector(X[1]),as.vector(X[2]),as.vector(X[3]),as.vector(X[4]),as.vector(X[5]), tempFile), silent = TRUE)
-      if(class(tempFile) == 'try-error'){
-        return()
-      } else {
-        tempFile <- as.data.frame.array(tempFile)
-        tempFile <- tempFile[,seq_len(8)]
-        colnames(tempFile) <- c('SRA', 'SRS', 'Tissue', 'Protocol', 'Species', 'Cluster', 'Cells', 'Cell Type')
-        return(tempFile)
-      }
-    })
-  } else {
-    cellList <- apply(sampleList,1,function(X){
-      htmlFile <- paste0('https://panglaodb.se/list_clusters_and_cell_types.html?sra=',X[1],'&srs=',X[2])
-      tempFile <- tempfile()
-      xml2::download_html(htmlFile, tempFile)
-      tempFile <- try(XML::readHTMLTable(tempFile)[[1]], silent = TRUE)
-      tempFile <- try(data.frame(as.vector(X[1]),as.vector(X[2]),as.vector(X[3]),as.vector(X[4]),as.vector(X[5]), tempFile), silent = TRUE)
-      if(class(tempFile) == 'try-error'){
-        return()
-      } else {
-        tempFile <- as.data.frame.array(tempFile)
-        tempFile <- tempFile[,seq_len(8)]
-        colnames(tempFile) <- c('SRA', 'SRS', 'Tissue', 'Protocol', 'Species', 'Cluster', 'Cells', 'Cell Type')
-        return(tempFile)
-      }
-    })
+  downloadData <- function(X){
+    htmlFile <- paste0('https://panglaodb.se/list_clusters_and_cell_types.html?sra=',X[1],'&srs=',X[2])
+    tempFile <- tempfile()
+    xml2::download_html(htmlFile, tempFile)
+    tempFile <- try(XML::readHTMLTable(tempFile)[[1]], silent = TRUE)
+    tempFile <- try(data.frame(as.vector(X[1]),as.vector(X[2]),as.vector(X[3]),as.vector(X[4]),as.vector(X[5]), tempFile), silent = TRUE)
+    if(class(tempFile) == 'try-error'){
+      return()
+    } else {
+      tempFile <- as.data.frame.array(tempFile)
+      tempFile <- tempFile[,seq_len(8)]
+      colnames(tempFile) <- c('SRA', 'SRS', 'Tissue', 'Protocol', 'Species', 'Cluster', 'Cells', 'Cell Type')
+      return(tempFile)
+    }
   }
+  if(isTRUE(verbose)){
+    cellList <- pbapply::pbapply(sampleList,1,downloadData)
+  } else {
+    cellList <- apply(sampleList,1,downloadData)
+  }
+
   # Filtering errors
   cellList <- cellList[unlist(lapply(cellList, class)) %in% 'data.frame']
 
