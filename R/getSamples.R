@@ -4,10 +4,62 @@
 #' @import Matrix
 #' @title Download the expression matrix and annotations from the panglaoDB database.
 #' @param srs A
-getSamples <- function(srs){
+
+getSamples <- function(sra = 'All', srs = 'All', tissue = 'All', protocol = 'All', specie = 'All', celltype='All', merge = TRUE, integrate = TRUE){
+  # SampleList
   sampleList <- getSampleList()
-  SRS <- match.arg(srs, choices = sampleList$SRS, several.ok = TRUE)
-  sampleList <- sampleList[sampleList$SRS %in% SRS,]
+
+  # Filters
+  SRA <- match.arg(arg = sra, choices = unique(c('All',sampleList$SRA)))
+  if(isTRUE('All' %in% SRA)){
+    SRA <- unique(sampleList$SRA)
+  }
+  SRS <- match.arg(arg = srs, choices = unique(c('All',sampleList$SRS)))
+  if(isTRUE('All' %in% SRS)){
+    SRS <- unique(sampleList$SRS)
+  }
+  Tissue <- match.arg(arg = tissue, choices = unique(c('All',sampleList$Tissue)), several.ok = TRUE)
+  if(isTRUE('All' %in% Tissue)){
+    Tissue <- unique(sampleList$Tissue)
+  }
+  Protocol <- match.arg(arg = protocol, choices = unique(c('All',sampleList$Protocol)), several.ok = TRUE)
+  if(isTRUE('All' %in% Protocol)){
+    Protocol <- unique(sampleList$Protocol)
+  }
+  Specie <- match.arg(arg = specie, choices = unique(c('All',sampleList$Species)), several.ok = TRUE)
+  if(isTRUE('All' %in% Specie)){
+    Specie <- unique(sampleList$Species)
+  }
+
+  # Applying filter
+  F1 <- sampleList$SRA %in% SRA
+  F2 <- sampleList$SRS %in% SRS
+  F3 <- sampleList$Tissue %in% Tissue
+  F4 <- sampleList$Protocol %in% Protocol
+  F5 <- sampleList$Species %in% Specie
+  sampleList <- sampleList[F1 & F2 & F3 & F4 & F5,]
+
+  # Error
+  if (nrow(sampleList) == 0){
+    message('0 Samples Found')
+    return()
+  }
+
+  # Filtering by cell-type
+  ctList <- getCellTypeContent(srs = sampleList$SRS, verbose = FALSE)
+  CellType <- match.arg(arg = celltype, choices = unique(c('All', ctList$`Cell Type`)), several.ok = TRUE)
+  if(isTRUE('All' %in% CellType)){
+    CellType <- unique(ctList$`Cell Type`)
+  }
+  ctList <- ctList[ctList$`Cell Type` %in% CellType,]
+  sampleList <- sampleList[sampleList$SRS %in% ctList$SRS,]
+
+  # Error
+  if (nrow(sampleList) == 0){
+    message('0 Samples Found')
+    return()
+  }
+
   dataSets <- pbapply::pbapply(sampleList,1, function(X){
     load(url(paste0("https://panglaodb.se/data_dl.php?sra=",X[1],"&srs=",X[2],"&filetype=R&datatype=readcounts")))
     gList <- rownames(sm)
@@ -27,9 +79,18 @@ getSamples <- function(srs){
     sm$CellTypes <- cellTypes
     sm$panglaoCluster <- as.character(cClusters)
     sm$Tissue <- rep(as.character(X[3]), length(cClusters))
+    sm <- subset(sm, cells = colnames(sm)[sm$CellTypes %in% CellType])
+    closeAllConnections()
     return(sm)
   })
-  names(dataSets) <- SRS
+  names(dataSets) <- sampleList$SRS
+
+  if(isTRUE(merge)){
+    dataSets <- mergeExperiments(dataSets)
+  }
+  if(isTRUE(integrate)){
+    dataSets <- integrateExperiments(dataSets)
+  }
   return(dataSets)
 }
 
