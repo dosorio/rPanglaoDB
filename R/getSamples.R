@@ -5,7 +5,7 @@
 #' @title Download the expression matrix and annotations from the panglaoDB database.
 #' @param srs A
 
-getSamples <- function(sra = 'All', srs = 'All', tissue = 'All', protocol = 'All', specie = 'All', celltype='All', merge = TRUE, integrate = TRUE){
+getSamples <- function(sra = 'All', srs = 'All', tissue = 'All', protocol = 'All', specie = 'All', celltype='All', merge = TRUE){
   # SampleList
   sampleList <- getSampleList()
 
@@ -87,9 +87,6 @@ getSamples <- function(sra = 'All', srs = 'All', tissue = 'All', protocol = 'All
 
   if(isTRUE(merge)){
     dataSets <- mergeExperiments(dataSets)
-  }
-  if(isTRUE(integrate)){
-    dataSets <- integrateExperiments(dataSets)
   }
   return(dataSets)
 }
