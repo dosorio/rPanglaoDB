@@ -1,0 +1,18 @@
+os: 
+- linux
+
+language: r
+r:
+  - oldrel
+  - release
+  - devel
+  
+r_github_packages:
+  - jimhester/covr
+  - satijalab/seurat
+
+after_success:
+  - Rscript -e 'covr::codecov()'
+  
+cache: packages
+sudo: false
