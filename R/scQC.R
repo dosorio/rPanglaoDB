@@ -1,4 +1,5 @@
 #' @import Matrix
+#' @importFrom stats lm predict
 scQC <- function(X, mtThreshold = 0.1, minLSize = 1000){
   if(class(X) == 'Seurat'){
     countMatrix <- X@assays$RNA@counts

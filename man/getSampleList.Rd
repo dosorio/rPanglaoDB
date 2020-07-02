@@ -9,3 +9,7 @@ getSampleList()
 \description{
 Get the sample list from the panglaoDB database.
 }
+\examples{
+sampleList <- getSampleList()
+head(sampleList)
+}
