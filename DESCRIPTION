@@ -1,6 +1,6 @@
 Package: rPanglaoDB
 Type: Package
-Title: Get labeled single-cell RNA-seq data from the PanglaoDB database
+Title: Download single-cell RNA-seq data from the PanglaoDB database
 Version: 0.1.0
 Authors@R: c(person("Daniel","Osorio",email="dcosorioh@tamu.edu",role=c("aut","cre")),
              person("James","Cai",role=c("aut","ths")))
