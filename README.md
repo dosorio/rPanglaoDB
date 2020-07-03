@@ -12,6 +12,3 @@ There is not official release of rPanglaoDB available on CRAN yet. To install th
 remotes::install_github("dosorio/rPanglaoDB")
 library(rPanglaoDB)
 ```
-
-Available functions
--------------------
