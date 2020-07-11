@@ -10,6 +10,8 @@ r:
 r_github_packages:
   - jimhester/covr
   - satijalab/seurat
+  - cran/XML
+  - cran/xml2
 
 after_success:
   - Rscript -e 'covr::codecov()'
