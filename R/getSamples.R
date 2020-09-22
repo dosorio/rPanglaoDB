@@ -10,11 +10,11 @@ getSamples <- function(sra = 'All', srs = 'All', tissue = 'All', protocol = 'All
   sampleList <- getSampleList()
 
   # Filters
-  SRA <- match.arg(arg = sra, choices = unique(c('All',sampleList$SRA)))
+  SRA <- match.arg(arg = sra, choices = unique(c('All',sampleList$SRA)), several.ok = TRUE)
   if(isTRUE('All' %in% SRA)){
     SRA <- unique(sampleList$SRA)
   }
-  SRS <- match.arg(arg = srs, choices = unique(c('All',sampleList$SRS)))
+  SRS <- match.arg(arg = srs, choices = unique(c('All',sampleList$SRS)), several.ok = TRUE)
   if(isTRUE('All' %in% SRS)){
     SRS <- unique(sampleList$SRS)
   }
