@@ -3,9 +3,23 @@
 #' @importFrom Seurat CreateSeuratObject
 #' @import Matrix
 #' @title Download the expression matrix and annotations from the panglaoDB database.
+#' @param sra A
 #' @param srs A
+#' @param tissue A
+#' @param protocol A
+#' @param specie A
+#' @param celltype A
+#' @param merge A
+#' @examples 
+#' # From PanglaoDB SRS3805255
+#' # https://panglaodb.se/view_data.php?sra=SRA779509&srs=SRS3805255
+#' 
+#' \dontrun{
+#' SRS3805255 <- getSamples(srs = 'SRS3805255')
+#' SRS3805255
+#' }
 
-getSamples <- function(sra = 'All', srs = 'All', tissue = 'All', protocol = 'All', specie = 'All', celltype='All', merge = TRUE, integrate = TRUE){
+getSamples <- function(sra = 'All', srs = 'All', tissue = 'All', protocol = 'All', specie = 'All', celltype='All', merge = TRUE){
   # SampleList
   sampleList <- getSampleList()
 
@@ -74,12 +88,12 @@ getSamples <- function(sra = 'All', srs = 'All', tissue = 'All', protocol = 'All
     names(cClusters) <- colnames(sm)
     sm <- suppressWarnings(Seurat::CreateSeuratObject(sm, project = as.character(X[2])))
     cellTypes <- cNames[as.character(cClusters),]$`Cell Type`
-    cellTypes[cellTypes %in% 'Unknown'] <- NA
     names(cellTypes) <- colnames(sm)
     sm$CellTypes <- cellTypes
     sm$panglaoCluster <- as.character(cClusters)
     sm$Tissue <- rep(as.character(X[3]), length(cClusters))
     sm <- subset(sm, cells = colnames(sm)[sm$CellTypes %in% CellType])
+    sm$CellTypes[sm$CellTypes %in% 'Unknown'] <- NA
     closeAllConnections()
     return(sm)
   })
@@ -87,9 +101,6 @@ getSamples <- function(sra = 'All', srs = 'All', tissue = 'All', protocol = 'All
 
   if(isTRUE(merge)){
     dataSets <- mergeExperiments(dataSets)
-  }
-  if(isTRUE(integrate)){
-    dataSets <- integrateExperiments(dataSets)
   }
   return(dataSets)
 }

@@ -1,0 +1,22 @@
+os: 
+- linux
+
+language: r
+r:
+  - oldrel
+  - release
+  - devel
+  
+r_github_packages:
+  - jimhester/covr
+  - satijalab/seurat
+  - cran/XML
+  - cran/xml2
+  - cran/pbapply
+  - cran/Matrix
+
+after_success:
+  - Rscript -e 'covr::codecov()'
+  
+cache: packages
+sudo: false

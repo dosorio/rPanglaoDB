@@ -4,11 +4,40 @@
 \alias{getSamples}
 \title{Download the expression matrix and annotations from the panglaoDB database.}
 \usage{
-getSamples(srs)
+getSamples(
+  sra = "All",
+  srs = "All",
+  tissue = "All",
+  protocol = "All",
+  specie = "All",
+  celltype = "All",
+  merge = TRUE
+)
 }
 \arguments{
+\item{sra}{A}
+
 \item{srs}{A}
+
+\item{tissue}{A}
+
+\item{protocol}{A}
+
+\item{specie}{A}
+
+\item{celltype}{A}
+
+\item{merge}{A}
 }
 \description{
 Download the expression matrix and annotations from the panglaoDB database.
+}
+\examples{
+# From PanglaoDB SRS3805255
+# https://panglaodb.se/view_data.php?sra=SRA779509&srs=SRS3805255
+
+\dontrun{
+SRS3805255 <- getSamples(srs = 'SRS3805255')
+SRS3805255
+}
 }

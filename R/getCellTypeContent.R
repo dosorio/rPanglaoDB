@@ -9,7 +9,14 @@
 #' @param protocol A
 #' @param specie A
 #' @param verbose A
-#'
+#' @examples 
+#' # From PanglaoDB
+#' # https://panglaodb.se/list_clusters_and_cell_types.html?sra=SRA689041&srs=SRS3166675
+#' 
+#' \dontrun{
+#' SRS3166675 <- getCellTypeContent(srs = 'SRS3166675')
+#' SRS3166675
+#' }
 getCellTypeContent <- function(sra = 'All', srs = 'All', tissue = 'All', protocol = 'All', specie = 'All', verbose = TRUE){
 
   # SampleList
