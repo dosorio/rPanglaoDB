@@ -10,10 +10,10 @@
 #' @param specie A
 #' @param celltype A
 #' @param merge A
-#' @examples 
+#' @examples
 #' # From PanglaoDB SRS3805255
 #' # https://panglaodb.se/view_data.php?sra=SRA779509&srs=SRS3805255
-#' 
+#'
 #' \dontrun{
 #' SRS3805255 <- getSamples(srs = 'SRS3805255')
 #' SRS3805255
@@ -86,14 +86,17 @@ getSamples <- function(sra = 'All', srs = 'All', tissue = 'All', protocol = 'All
     sm <- sm[,colnames(sm) %in% rownames(cClusters)]
     cClusters <- cClusters[colnames(sm),]
     names(cClusters) <- colnames(sm)
+    # Capital gene names to allow integration across Human and Mice
+    rownames(sm) <- toupper(rownames(sm))
     sm <- suppressWarnings(Seurat::CreateSeuratObject(sm, project = as.character(X[2])))
     cellTypes <- cNames[as.character(cClusters),]$`Cell Type`
     names(cellTypes) <- colnames(sm)
     sm$CellTypes <- cellTypes
     sm$panglaoCluster <- as.character(cClusters)
-    sm$Tissue <- rep(as.character(X[3]), length(cClusters))
+    sm$Tissue <- X[['Tissue']]
     sm <- subset(sm, cells = colnames(sm)[sm$CellTypes %in% CellType])
     sm$CellTypes[sm$CellTypes %in% 'Unknown'] <- NA
+    sm$Specie <- X[['Species']]
     closeAllConnections()
     return(sm)
   })
@@ -104,5 +107,3 @@ getSamples <- function(sra = 'All', srs = 'All', tissue = 'All', protocol = 'All
   }
   return(dataSets)
 }
-
-
