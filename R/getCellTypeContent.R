@@ -1,4 +1,3 @@
-#' @export getCellTypeContent
 #' @importFrom XML readHTMLTable
 #' @importFrom xml2 download_html
 #' @importFrom pbapply pbapply
@@ -9,10 +8,10 @@
 #' @param protocol A
 #' @param specie A
 #' @param verbose A
-#' @examples 
+#' @examples
 #' # From PanglaoDB
 #' # https://panglaodb.se/list_clusters_and_cell_types.html?sra=SRA689041&srs=SRS3166675
-#' 
+#'
 #' \dontrun{
 #' SRS3166675 <- getCellTypeContent(srs = 'SRS3166675')
 #' SRS3166675
