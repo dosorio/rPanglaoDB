@@ -20,9 +20,9 @@ scQC <- function(X, mtThreshold = 0.1, minLSize = 1000){
     mtProportion <- mtCounts/librarySize
     mtLM <- lm(mtCounts~librarySize)
     mtLM <- as.data.frame(predict(mtLM, data.frame(librarySize), interval = 'prediction'))
-    selectedCells <- mtCounts > mtLM$lwr & mtCounts < mtLM$upr & nGenes > genesLM$lwr & nGenes < genesLM$upr & mtProportion <= mtThreshold & librarySize < 2 * mean(librarySize)
+    selectedCells <- ((mtCounts > mtLM$lwr) & (mtCounts < mtLM$upr) & (nGenes > genesLM$lwr) & (nGenes < genesLM$upr) & (mtProportion <= mtThreshold) & (librarySize < (2 * mean(librarySize))))
   } else {
-    selectedCells <- nGenes > genesLM$lwr & nGenes < genesLM$upr & librarySize < 2 * mean(librarySize)
+    selectedCells <- ((nGenes > genesLM$lwr) & (nGenes < genesLM$upr) & (librarySize < (2 * mean(librarySize))))
   }
   selectedCells <- colnames(countMatrix)[selectedCells]
   if(class(X) == 'Seurat'){
