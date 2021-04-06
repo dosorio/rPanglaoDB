@@ -60,7 +60,7 @@ getSamples <- function(sra = 'All', srs = 'All', tissue = 'All', protocol = 'All
   }
 
   # Filtering by cell-type
-  ctList <- getCellTypeContent(srs = sampleList$SRS, verbose = FALSE)
+  ctList <- getSampleComposition(srs = sampleList$SRS, verbose = FALSE)
   CellType <- match.arg(arg = celltype, choices = unique(c('All', ctList$`Cell Type`)), several.ok = TRUE)
   if(isTRUE('All' %in% CellType)){
     CellType <- unique(ctList$`Cell Type`)
@@ -79,7 +79,7 @@ getSamples <- function(sra = 'All', srs = 'All', tissue = 'All', protocol = 'All
     gList <- rownames(sm)
     rownames(sm) <- unlist(lapply(strsplit(gList, '-ENS|_ENS'), function(X){X[1]}))
     sm <- sm[rowSums(sm) > 0,]
-    cNames <- getCellTypeContent(srs = as.character(X[2]), verbose = FALSE)
+    cNames <- getSampleComposition(srs = as.character(X[2]), verbose = FALSE)
     rownames(cNames) <- cNames$Cluster
     tempFile <- tempfile()
     cClusters <- utils::read.table(paste0('https://panglaodb.se/data_dl.php?sra=',X[1],'&srs=',X[2],'&datatype=clusters&filetype=txt'), row.names = 1)
