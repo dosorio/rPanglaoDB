@@ -8,14 +8,14 @@
 #' @param protocol A
 #' @param specie A
 #' @param verbose A
+#' @export getSampleComposition
 #' @examples
 #' # From PanglaoDB
 #' # https://panglaodb.se/list_clusters_and_cell_types.html?sra=SRA689041&srs=SRS3166675
 #'
-#' \dontrun{
-#' SRS3166675 <- getSampleComposition(srs = 'SRS3166675')
-#' SRS3166675
-#' }
+#' sc_SRS3166675 <- getSampleComposition(srs = 'SRS3166675')
+#' sc_SRS3166675
+#'
 getSampleComposition <- function(sra = 'All', srs = 'All', tissue = 'All', protocol = 'All', specie = 'All', verbose = TRUE){
 
   # SampleList
@@ -49,7 +49,7 @@ getSampleComposition <- function(sra = 'All', srs = 'All', tissue = 'All', proto
   F3 <- sampleList$Tissue %in% Tissue
   F4 <- sampleList$Protocol %in% Protocol
   F5 <- sampleList$Species %in% Specie
-  sampleList <- sampleList[F1 & F2 & F3 & F4 & F5,]
+  sampleList <- sampleList[(F1 & F2 & F3 & F4 & F5),]
 
   # Error
   if (nrow(sampleList) == 0){

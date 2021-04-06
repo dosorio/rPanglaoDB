@@ -1,6 +1,7 @@
 #' @export getSamples
 #' @importFrom utils read.table
 #' @importFrom Seurat CreateSeuratObject
+#' @importFrom methods new
 #' @import Matrix
 #' @title Download the expression matrix and annotations from the panglaoDB database.
 #' @param sra A

@@ -33,8 +33,7 @@ Get the cell-type content for each sample from the panglaoDB database.
 # From PanglaoDB
 # https://panglaodb.se/list_clusters_and_cell_types.html?sra=SRA689041&srs=SRS3166675
 
-\dontrun{
-SRS3166675 <- getSampleComposition(srs = 'SRS3166675')
-SRS3166675
-}
+sc_SRS3166675 <- getSampleComposition(srs = 'SRS3166675')
+sc_SRS3166675
+
 }
