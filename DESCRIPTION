@@ -1,12 +1,13 @@
 Package: rPanglaoDB
 Type: Package
-Title: Download single-cell RNA-seq data from the PanglaoDB database
+Title: Download and Merge Single-Cell RNA-Seq Data from the PanglaoDB Database
 Version: 0.1.0
 Authors@R: c(person("Daniel","Osorio",email="dcosorioh@tamu.edu",role=c("aut","cre")),
-             person("James J.","Cai",role=c("aut","ths")))
-Description: Download and integrate labeled single-cell RNA-seq data from the PanglaoDB into a Seurat object.
+             person("Marieke","Kuijjer",role=c("aut")),
+             person("James J.","Cai",role=c("aut")))
+Description: Download and merge labeled single-cell RNA-seq data from the PanglaoDB into a Seurat object.
 License: GPL-3
 Encoding: UTF-8
-LazyData: true
+LazyData: false
 RoxygenNote: 7.1.1
 Imports: methods, XML, xml2, Seurat, pbapply, Matrix
