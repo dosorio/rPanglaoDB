@@ -7,7 +7,7 @@
 getMarkers(markerGenes)
 }
 \arguments{
-\item{markerGenes}{A}
+\item{markerGenes}{A set of molecular markers to query the database}
 }
 \description{
 Get the list of samples from the panglaoDB database expressing a set of molecular markers.

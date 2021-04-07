@@ -15,29 +15,27 @@ getSamples(
 )
 }
 \arguments{
-\item{sra}{A}
+\item{sra}{Filter based on the SRA identifier of the biological sample in the SRA database}
 
-\item{srs}{A}
+\item{srs}{Filter based on the SRS identifier of the biological sample in the SRA database}
 
-\item{tissue}{A}
+\item{tissue}{Filter based on the tissue from which the biological samples originates from}
 
-\item{protocol}{A}
+\item{protocol}{Filter based on the single-cell library preparation protocol used to generate the data}
 
-\item{specie}{A}
+\item{specie}{Filter based on the specie from which the biological samples originates from}
 
-\item{celltype}{A}
+\item{celltype}{Filter based on the cell-type from which the counts originates from}
 
-\item{merge}{A}
+\item{merge}{A boolean value TRUE or FALSE defining if the samples should be returned as a list or as a unique Seurat object}
 }
 \description{
 Download the expression matrix and annotations from the panglaoDB database.
 }
 \examples{
 # From PanglaoDB SRS3805255
-# https://panglaodb.se/view_data.php?sra=SRA779509&srs=SRS3805255
+# https://panglaodb.se/view_data.php?sra=SRA705190&srs=SRS4139632
 
-\dontrun{
-SRS3805255 <- getSamples(srs = 'SRS3805255')
-SRS3805255
-}
+SRS4139632 <- getSamples(srs = 'SRS4139632')
+SRS4139632
 }

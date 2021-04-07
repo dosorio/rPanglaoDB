@@ -3,11 +3,11 @@
 #' @importFrom xml2 download_html
 #' @importFrom pbapply pbapply
 #' @title Get the cell-type content for each sample from the panglaoDB database.
-#' @param sra The SRA identifier of the biological sample in the SRA database
-#' @param srs The SRS identifier of the biological sample in the SRA database
-#' @param tissue The tissue from which the biological samples originates from
-#' @param protocol The single-cell library preparation protocol used to generate the data
-#' @param specie The specie from which the biological samples originates from. The corresponding reference genome was used for maping the sequencing reads
+#' @param sra Filter based on the SRA identifier of the biological sample in the SRA database
+#' @param srs Filter based on the SRS identifier of the biological sample in the SRA database
+#' @param tissue Filter based on the tissue from which the biological samples originates from
+#' @param protocol Filter based on the single-cell library preparation protocol used to generate the data
+#' @param specie Filter based on the specie from which the biological samples originates from
 #' @param verbose A boolean value TRUE or FALSE to activate the verbose mode
 #' @examples
 #' # From PanglaoDB

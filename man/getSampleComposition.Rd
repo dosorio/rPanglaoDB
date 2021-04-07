@@ -14,15 +14,15 @@ getSampleComposition(
 )
 }
 \arguments{
-\item{sra}{The SRA identifier of the biological sample in the SRA database}
+\item{sra}{Filter based on the SRA identifier of the biological sample in the SRA database}
 
-\item{srs}{The SRS identifier of the biological sample in the SRA database}
+\item{srs}{Filter based on the SRS identifier of the biological sample in the SRA database}
 
-\item{tissue}{The tissue from which the biological samples originates from}
+\item{tissue}{Filter based on the tissue from which the biological samples originates from}
 
-\item{protocol}{The single-cell library preparation protocol used to generate the data}
+\item{protocol}{Filter based on the single-cell library preparation protocol used to generate the data}
 
-\item{specie}{The specie from which the biological samples originates from. The corresponding reference genome was used for maping the sequencing reads}
+\item{specie}{Filter based on the specie from which the biological samples originates from}
 
 \item{verbose}{A boolean value TRUE or FALSE to activate the verbose mode}
 }

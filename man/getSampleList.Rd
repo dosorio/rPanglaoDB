@@ -10,8 +10,6 @@ getSampleList()
 Get the sample list from the panglaoDB database.
 }
 \examples{
-\dontrun{
 sampleList <- getSampleList()
 head(sampleList)
-}
 }

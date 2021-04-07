@@ -4,21 +4,19 @@
 #' @importFrom methods new
 #' @import Matrix
 #' @title Download the expression matrix and annotations from the panglaoDB database.
-#' @param sra A
-#' @param srs A
-#' @param tissue A
-#' @param protocol A
-#' @param specie A
-#' @param celltype A
-#' @param merge A
+#' @param sra Filter based on the SRA identifier of the biological sample in the SRA database
+#' @param srs Filter based on the SRS identifier of the biological sample in the SRA database
+#' @param tissue Filter based on the tissue from which the biological samples originates from
+#' @param protocol Filter based on the single-cell library preparation protocol used to generate the data
+#' @param specie Filter based on the specie from which the biological samples originates from
+#' @param celltype Filter based on the cell-type from which the counts originates from
+#' @param merge A boolean value TRUE or FALSE defining if the samples should be returned as a list or as a unique Seurat object
 #' @examples
 #' # From PanglaoDB SRS3805255
-#' # https://panglaodb.se/view_data.php?sra=SRA779509&srs=SRS3805255
+#' # https://panglaodb.se/view_data.php?sra=SRA705190&srs=SRS4139632
 #'
-#' \dontrun{
-#' SRS3805255 <- getSamples(srs = 'SRS3805255')
-#' SRS3805255
-#' }
+#' SRS4139632 <- getSamples(srs = 'SRS4139632')
+#' SRS4139632
 
 getSamples <- function(sra = 'All', srs = 'All', tissue = 'All', protocol = 'All', specie = 'All', celltype='All', merge = TRUE){
   # SampleList
