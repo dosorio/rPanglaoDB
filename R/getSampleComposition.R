@@ -1,3 +1,4 @@
+#' @export getSampleComposition
 #' @importFrom XML readHTMLTable
 #' @importFrom xml2 download_html
 #' @importFrom pbapply pbapply
@@ -7,8 +8,7 @@
 #' @param tissue The tissue from which the biological samples originates from
 #' @param protocol The single-cell library preparation protocol used to generate the data
 #' @param specie The specie from which the biological samples originates from. The corresponding reference genome was used for maping the sequencing reads
-#' @param verbose A
-#' @export getSampleComposition
+#' @param verbose A boolean value TRUE or FALSE to activate the verbose mode
 #' @examples
 #' # From PanglaoDB
 #' # https://panglaodb.se/list_clusters_and_cell_types.html?sra=SRA689041&srs=SRS3166675

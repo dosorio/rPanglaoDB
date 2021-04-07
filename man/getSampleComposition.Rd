@@ -14,17 +14,17 @@ getSampleComposition(
 )
 }
 \arguments{
-\item{sra}{A}
+\item{sra}{The SRA identifier of the biological sample in the SRA database}
 
-\item{srs}{A}
+\item{srs}{The SRS identifier of the biological sample in the SRA database}
 
-\item{tissue}{A}
+\item{tissue}{The tissue from which the biological samples originates from}
 
-\item{protocol}{A}
+\item{protocol}{The single-cell library preparation protocol used to generate the data}
 
-\item{specie}{A}
+\item{specie}{The specie from which the biological samples originates from. The corresponding reference genome was used for maping the sequencing reads}
 
-\item{verbose}{A}
+\item{verbose}{A boolean value TRUE or FALSE to activate the verbose mode}
 }
 \description{
 Get the cell-type content for each sample from the panglaoDB database.
