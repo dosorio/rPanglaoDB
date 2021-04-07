@@ -1,6 +1,6 @@
 rPanglaoDB 
 ========
-R package to download and integrate labeled single-cell RNA-seq data from the PanglaoDB database.
+R package to download and merge labeled single-cell RNA-seq data from the PanglaoDB database.
 
 Install
 -------
