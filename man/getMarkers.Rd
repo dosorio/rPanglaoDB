@@ -2,7 +2,7 @@
 % Please edit documentation in R/getMarkers.R
 \name{getMarkers}
 \alias{getMarkers}
-\title{Get the list of samples from the panglaoDB database containing a set of molecular markers.}
+\title{Get the list of samples from the panglaoDB database expressing a set of molecular markers.}
 \usage{
 getMarkers(markerGenes)
 }
@@ -10,5 +10,5 @@ getMarkers(markerGenes)
 \item{markerGenes}{A}
 }
 \description{
-Get the list of samples from the panglaoDB database containing a set of molecular markers.
+Get the list of samples from the panglaoDB database expressing a set of molecular markers.
 }
