@@ -1,3 +1,8 @@
+#' @export getMarkers
+#' @importFrom utils read.csv
+#' @param markerGenes A
+#' @title Get the list of samples from the panglaoDB database containing a set of molecular markers.
+
 getMarkers <- function(markerGenes){
   markerString <- paste0(markerGenes, collapse = '%20and%20')
   fileString <- paste0('https://panglaodb.se/search.html?query=%22', markerString, '%22&species=1&tumor=1&nonadult=1')
