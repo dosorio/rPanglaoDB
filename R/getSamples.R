@@ -15,8 +15,10 @@
 #' # From PanglaoDB SRS3805255
 #' # https://panglaodb.se/view_data.php?sra=SRA705190&srs=SRS4139632
 #'
+#' \dontrun{
 #' SRS4139632 <- getSamples(srs = 'SRS4139632')
 #' SRS4139632
+#' }
 
 getSamples <- function(sra = 'All', srs = 'All', tissue = 'All', protocol = 'All', specie = 'All', celltype='All', merge = TRUE){
   # SampleList
@@ -74,32 +76,38 @@ getSamples <- function(sra = 'All', srs = 'All', tissue = 'All', protocol = 'All
   }
 
   dataSets <- pbapply::pbapply(sampleList,1, function(X){
-    load(url(paste0("https://panglaodb.se/data_dl.php?sra=",X[1],"&srs=",X[2],"&filetype=R&datatype=readcounts")))
-    gList <- rownames(sm)
-    rownames(sm) <- unlist(lapply(strsplit(gList, '-ENS|_ENS'), function(X){X[1]}))
-    sm <- sm[rowSums(sm) > 0,]
-    cNames <- getSampleComposition(srs = as.character(X[2]), verbose = FALSE)
-    rownames(cNames) <- cNames$Cluster
-    tempFile <- tempfile()
-    cClusters <- utils::read.table(paste0('https://panglaodb.se/data_dl.php?sra=',X[1],'&srs=',X[2],'&datatype=clusters&filetype=txt'), row.names = 1)
-    sm <- sm[,colnames(sm) %in% rownames(cClusters)]
-    cClusters <- cClusters[colnames(sm),]
-    names(cClusters) <- colnames(sm)
-    # Capital gene names to allow integration across Human and Mice
-    rownames(sm) <- toupper(rownames(sm))
-    sm <- suppressWarnings(Seurat::CreateSeuratObject(sm, project = as.character(X[2])))
-    cellTypes <- cNames[as.character(cClusters),]$`Cell Type`
-    names(cellTypes) <- colnames(sm)
-    sm$CellTypes <- cellTypes
-    sm$panglaoCluster <- as.character(cClusters)
-    sm$Tissue <- X[['Tissue']]
-    sm <- subset(sm, cells = colnames(sm)[sm$CellTypes %in% CellType])
-    sm$CellTypes[sm$CellTypes %in% 'Unknown'] <- NA
-    sm$Specie <- X[['Species']]
-    closeAllConnections()
+    try(load(url(paste0("https://panglaodb.se/data_dl.php?sra=",X[1],"&srs=",X[2],"&filetype=R&datatype=readcounts"))), silent = TRUE)
+    if(exists('sm')){
+      gList <- rownames(sm)
+      rownames(sm) <- unlist(lapply(strsplit(gList, '-ENS|_ENS'), function(X){X[1]}))
+      sm <- sm[rowSums(sm) > 0,]
+      cNames <- getSampleComposition(srs = as.character(X[2]), verbose = FALSE)
+      rownames(cNames) <- cNames$Cluster
+      tempFile <- tempfile()
+      cClusters <- utils::read.table(paste0('https://panglaodb.se/data_dl.php?sra=',X[1],'&srs=',X[2],'&datatype=clusters&filetype=txt'), row.names = 1)
+      sm <- sm[,colnames(sm) %in% rownames(cClusters)]
+      cClusters <- cClusters[colnames(sm),]
+      names(cClusters) <- colnames(sm)
+      # Capital gene names to allow integration across Human and Mice
+      rownames(sm) <- toupper(rownames(sm))
+      sm <- suppressWarnings(Seurat::CreateSeuratObject(sm, project = as.character(X[2])))
+      cellTypes <- cNames[as.character(cClusters),]$`Cell Type`
+      names(cellTypes) <- colnames(sm)
+      sm$CellTypes <- cellTypes
+      sm$panglaoCluster <- as.character(cClusters)
+      sm$Tissue <- X[['Tissue']]
+      sm <- subset(sm, cells = colnames(sm)[sm$CellTypes %in% CellType])
+      sm$CellTypes[sm$CellTypes %in% 'Unknown'] <- NA
+      sm$Specie <- X[['Species']]
+      closeAllConnections()
+    } else {
+      sm <- new('Seurat')
+    }
     return(sm)
   })
   names(dataSets) <- sampleList$SRS
+
+  dataSets <- dataSets[unlist(lapply(dataSets, class)) %in% 'Seurat']
 
   if(isTRUE(merge)){
     dataSets <- mergeExperiments(dataSets)
