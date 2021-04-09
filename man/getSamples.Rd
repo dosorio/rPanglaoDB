@@ -36,6 +36,8 @@ Download the expression matrix and annotations from the panglaoDB database.
 # From PanglaoDB SRS3805255
 # https://panglaodb.se/view_data.php?sra=SRA705190&srs=SRS4139632
 
+\dontrun{
 SRS4139632 <- getSamples(srs = 'SRS4139632')
 SRS4139632
+}
 }
