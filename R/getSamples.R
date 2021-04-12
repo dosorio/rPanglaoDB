@@ -11,14 +11,28 @@
 #' @param specie Filter based on the specie from which the biological samples originates from
 #' @param celltype Filter based on the cell-type from which the counts originates from
 #' @param merge A boolean value TRUE or FALSE defining if the samples should be returned as a list or as a unique Seurat object
+#' @return A Seurat object, as described in \code{?SeuratObject::`Seurat-class`}
 #' @examples
 #' # From PanglaoDB SRS3805255
 #' # https://panglaodb.se/view_data.php?sra=SRA705190&srs=SRS4139632
 #'
 #' \dontrun{
 #' SRS4139632 <- getSamples(srs = 'SRS4139632')
-#' SRS4139632
-#' }
+#' SRS4139632}
+#'
+#' # An object of class Seurat
+#' # 19859 features across 102 samples within 1 assay
+#' # Active assay: RNA (19859 features, 0 variable features)
+#'
+#' # Metadata from the PanglaoDB database can be accessed as follows:
+#' head(SRS4139632[[]])
+#' #                  orig.ident nCount_RNA nFeature_RNA CellTypes panglaoCluster           Tissue       Specie
+#' # AAAGATGGTACGCTGC SRS4139632      19444         5121      <NA>              0 Embryonic kidney Homo sapiens
+#' # AACTGGTAGGAATGGA SRS4139632       7858         2964      <NA>              1 Embryonic kidney Homo sapiens
+#' # AAGGAGCCACATCCAA SRS4139632      11084         3393      <NA>              2 Embryonic kidney Homo sapiens
+#' # AAGGCAGTCAGAGGTG SRS4139632       8181         3104      <NA>              1 Embryonic kidney Homo sapiens
+#' # AAGTCTGAGGTTACCT SRS4139632      20172         5244      <NA>              1 Embryonic kidney Homo sapiens
+#' # ACACTGACAATCCAAC SRS4139632      10997         3773      <NA>              0 Embryonic kidney Homo sapiens
 
 getSamples <- function(sra = 'All', srs = 'All', tissue = 'All', protocol = 'All', specie = 'All', celltype='All', merge = TRUE){
   # SampleList
@@ -101,7 +115,7 @@ getSamples <- function(sra = 'All', srs = 'All', tissue = 'All', protocol = 'All
       sm$Specie <- X[['Species']]
       closeAllConnections()
     } else {
-      sm <- new('Seurat')
+      sm <- list()
     }
     return(sm)
   })

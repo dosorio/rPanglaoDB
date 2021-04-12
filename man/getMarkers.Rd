@@ -2,13 +2,33 @@
 % Please edit documentation in R/getMarkers.R
 \name{getMarkers}
 \alias{getMarkers}
-\title{Get the list of samples from the panglaoDB database expressing a set of molecular markers.}
+\title{Get the list of samples from the panglaoDB database with a pattern of expression for a set of molecular markers.}
 \usage{
-getMarkers(markerGenes)
+getMarkers(include, exclude = NULL)
 }
 \arguments{
-\item{markerGenes}{A set of molecular markers to query the database}
+\item{include}{A set of molecular markers to query the database. This set of genes needs to be expressed in the sample.}
+
+\item{exclude}{A set of molecular markers to query the database. This set of genes needs to be absent in the sample.}
+}
+\value{
+The rows in the data frame are the samples matching the requested pattern. The returned data frame contain 7 columns as follows:
+\itemize{
+\item{SRA:} The SRA identifier of the biological sample in the SRA database
+\item{SRS:} The SRS identifier of the biological sample in the SRA database
+\item{Specie:}  The specie from which the biological samples originated from
+\item{Tissue:}  The tissue from which the biological samples originated from
+\item{Cluster:}  The cluster-id assigned by the panglaoDB database to the cells matching the requested pattern
+\item{Cell-Type:} The cell-type from which the counts originates from
+\item{Markers:} The recovered pattern for the marker genes requested
+}
 }
 \description{
-Get the list of samples from the panglaoDB database expressing a set of molecular markers.
+Get the list of samples from the panglaoDB database with a pattern of expression for a set of molecular markers.
+}
+\examples{
+Fibrocytes <- getMarkers(include = c('ACTA2', 'CD34', 'FAP'))
+Fibrocytes
+#         SRA        SRS       Specie Tissue Cluster   Cell-Type         Markers
+# 1 SRA681285 SRS3121028 Mus musculus Dermis       4 Fibroblasts +ACTA2+CD34+FAP
 }

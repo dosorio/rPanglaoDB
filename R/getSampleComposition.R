@@ -9,13 +9,33 @@
 #' @param protocol Filter based on the single-cell library preparation protocol used to generate the data
 #' @param specie Filter based on the specie from which the biological samples originates from
 #' @param verbose A boolean value TRUE or FALSE to activate the verbose mode
+#' @return This function returns the cell-type composition of the samples included in the PanglaoDB database in a data frame with 8 columns as follows:
+#' \itemize{
+#' \item{SRA:} The SRA identifier of the biological sample in the SRA database
+#' \item{SRS:} The SRS identifier of the biological sample in the SRA database
+#' \item{Tissue:} The tissue from which the biological samples originated from
+#' \item{Protocol:} The single-cell library preparation protocol used to generate the data
+#' \item{Species:} The species from which the biological samples originated from
+#' \item{Cluster:}  The cluster-id assigned by the panglaoDB database to the cells in the sample
+#' \item{Cells:} The number of cells included in the cluster
+#' \item{Cell Type:} The cell-type from which the counts originates from
+#' }
 #' @examples
 #' # From PanglaoDB
 #' # https://panglaodb.se/list_clusters_and_cell_types.html?sra=SRA689041&srs=SRS3166675
 #'
-#' sc_SRS3166675 <- getSampleComposition(srs = 'SRS3166675')
-#' sc_SRS3166675
+#' SRS3166675 <- getSampleComposition(srs = 'SRS3166675')
+#' head(SRS3166675)
 #'
+#' #           SRA        SRS Tissue     Protocol      Species Cluster Cells           Cell Type
+#' # 6.1 SRA689041 SRS3166675  Colon 10x chromium Mus musculus       0   735         Fibroblasts
+#' # 6.2 SRA689041 SRS3166675  Colon 10x chromium Mus musculus       1   526 Smooth muscle cells
+#' # 6.3 SRA689041 SRS3166675  Colon 10x chromium Mus musculus       2   465             Unknown
+#' # 6.4 SRA689041 SRS3166675  Colon 10x chromium Mus musculus       3   157             Unknown
+#' # 6.5 SRA689041 SRS3166675  Colon 10x chromium Mus musculus       4   140        Goblet cells
+#' # 6.6 SRA689041 SRS3166675  Colon 10x chromium Mus musculus       5   100         Fibroblasts
+
+
 getSampleComposition <- function(sra = 'All', srs = 'All', tissue = 'All', protocol = 'All', specie = 'All', verbose = TRUE){
 
   # SampleList
