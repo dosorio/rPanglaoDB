@@ -5,7 +5,7 @@ Version: 0.1.0
 Authors@R: c(person("Daniel","Osorio", email = "daniecos@uio.no", role = c("aut","cre"), comment = c(ORCID = "0000-0003-4424-8422")),
              person("Marieke","Kuijjer", role = c("aut"), comment = c(ORCID = "0000-0001-6280-3130")),
              person("James J.","Cai", role = c("aut"), comment = c(ORCID = "0000-0002-8081-6725")))
-Description: Download and merge labeled single-cell RNA-seq data from the PanglaoDB into a Seurat object.
+Description: Download and merge labeled single-cell RNA-seq data from the PanglaoDB <https://panglaodb.se/> into a Seurat object.
 License: GPL-3
 Encoding: UTF-8
 LazyData: false
