@@ -49,11 +49,11 @@ Get the cell-type content for each sample from the panglaoDB database.
 SRS3166675 <- getSampleComposition(srs = 'SRS3166675')
 head(SRS3166675)
 
-#           SRA        SRS Tissue     Protocol      Species Cluster Cells           Cell Type
-# 6.1 SRA689041 SRS3166675  Colon 10x chromium Mus musculus       0   735         Fibroblasts
-# 6.2 SRA689041 SRS3166675  Colon 10x chromium Mus musculus       1   526 Smooth muscle cells
-# 6.3 SRA689041 SRS3166675  Colon 10x chromium Mus musculus       2   465             Unknown
-# 6.4 SRA689041 SRS3166675  Colon 10x chromium Mus musculus       3   157             Unknown
-# 6.5 SRA689041 SRS3166675  Colon 10x chromium Mus musculus       4   140        Goblet cells
-# 6.6 SRA689041 SRS3166675  Colon 10x chromium Mus musculus       5   100         Fibroblasts
+#       SRA        SRS Tissue     Protocol      Species Cluster Cells           Cell Type
+# SRA689041 SRS3166675  Colon 10x chromium Mus musculus       0   735         Fibroblasts
+# SRA689041 SRS3166675  Colon 10x chromium Mus musculus       1   526 Smooth muscle cells
+# SRA689041 SRS3166675  Colon 10x chromium Mus musculus       2   465             Unknown
+# SRA689041 SRS3166675  Colon 10x chromium Mus musculus       3   157             Unknown
+# SRA689041 SRS3166675  Colon 10x chromium Mus musculus       4   140        Goblet cells
+# SRA689041 SRS3166675  Colon 10x chromium Mus musculus       5   100         Fibroblasts
 }

@@ -48,12 +48,5 @@ SRS4139632}
 # Active assay: RNA (19859 features, 0 variable features)
 
 # Metadata from the PanglaoDB database can be accessed as follows:
-head(SRS4139632[[]])
-#                  orig.ident nCount_RNA nFeature_RNA CellTypes panglaoCluster           Tissue       Specie
-# AAAGATGGTACGCTGC SRS4139632      19444         5121      <NA>              0 Embryonic kidney Homo sapiens
-# AACTGGTAGGAATGGA SRS4139632       7858         2964      <NA>              1 Embryonic kidney Homo sapiens
-# AAGGAGCCACATCCAA SRS4139632      11084         3393      <NA>              2 Embryonic kidney Homo sapiens
-# AAGGCAGTCAGAGGTG SRS4139632       8181         3104      <NA>              1 Embryonic kidney Homo sapiens
-# AAGTCTGAGGTTACCT SRS4139632      20172         5244      <NA>              1 Embryonic kidney Homo sapiens
-# ACACTGACAATCCAAC SRS4139632      10997         3773      <NA>              0 Embryonic kidney Homo sapiens
+# head(SRS4139632[[]])
 }

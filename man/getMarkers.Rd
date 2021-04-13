@@ -27,8 +27,10 @@ The rows in the data frame are the samples matching the requested pattern. The r
 Get the list of samples from the panglaoDB database with a pattern of expression for a set of molecular markers.
 }
 \examples{
+\dontrun{
 Fibrocytes <- getMarkers(include = c('ACTA2', 'CD34', 'FAP'))
-Fibrocytes
-#         SRA        SRS       Specie Tissue Cluster   Cell-Type         Markers
-# 1 SRA681285 SRS3121028 Mus musculus Dermis       4 Fibroblasts +ACTA2+CD34+FAP
+Fibrocytes}
+
+#       SRA        SRS       Specie Tissue Cluster   Cell-Type         Markers
+# SRA681285 SRS3121028 Mus musculus Dermis       4 Fibroblasts +ACTA2+CD34+FAP
 }
