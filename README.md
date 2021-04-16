@@ -8,29 +8,29 @@ This package required R version 4.0 or higher. If you are using an older version
 
 The official release of `rPanglaoDB` is available on CRAN. To install it from CRAN, you can use the following command:
 ```
-install.packages('rPanglaoDB', dependencies = TRUE)
+> install.packages('rPanglaoDB', dependencies = TRUE)
 ```
 
 If you have `remotes` installed, you can install the latest stable version of `rPanglaoDB` package directly from GitHub:
 
 ```
-remotes::install_github('dosorio/rPanglaoDB')
+> remotes::install_github('dosorio/rPanglaoDB')
 ```
 Usage
 -------
 #### Loading the package:
 As any other R package `rPanglaoDB` can be loaded using the `library` function as follows:
 ```
-library(rPanglaoDB)
+> library(rPanglaoDB)
 ```
 #### Accessing the list of available samples:
 To access the list of available samples deposited in the PanglaoDB database you may use the `getSamplesList()` function:
 ```
-samplesList <- getSampleList()
+> samplesList <- getSampleList()
 ```
 This function returns a ``data frame`` with 6 columns matching with the information provided [here](https://panglaodb.se/samples.html) by the PanglaoDB database.
 ```
-head(samplesList)
+> head(samplesList)
 
         SRA        SRS                          Tissue     Protocol      Species Cells
 1 SRA553822 SRS2119548   Cultured embryonic stem cells 10x chromium Homo sapiens  6501
@@ -43,8 +43,8 @@ head(samplesList)
 #### Accessing the cellular composition of a sample:
 To access the cell-type content for each sample from the panglaoDB database you may use the `getSampleComposition` function. `getSampleComposition` returns the cell-type composition of the samples included in the PanglaoDB database in a data frame with 8 columns. For example, to recover the sample composition of the sample with SRS = SRS2119548 you may use the following code:
 ```
-scSRS2119548 <- getSampleComposition(srs = 'SRS2119548')
-head(scSRS2119548)
+> scSRS2119548 <- getSampleComposition(srs = 'SRS2119548')
+> head(scSRS2119548)
 
           SRA        SRS                        Tissue     Protocol      Species Cluster Cells Cell Type
 1.1 SRA553822 SRS2119548 Cultured embryonic stem cells 10x chromium Homo sapiens       0  1572   Unknown
@@ -54,15 +54,15 @@ head(scSRS2119548)
 1.5 SRA553822 SRS2119548 Cultured embryonic stem cells 10x chromium Homo sapiens       4   220   Unknown
 1.6 SRA553822 SRS2119548 Cultured embryonic stem cells 10x chromium Homo sapiens       5   192   Unknown
 ```
-Retrieved information match with the SRS2119548 reported record from the PanglaoDB available [here](https://panglaodb.se/list_clusters_and_cell_types.html?sra=SRA553822&srs=SRS2119548)
+Retrieved information match with the SRS2119548 reported record from the PanglaoDB available [here](https://panglaodb.se/list_clusters_and_cell_types.html?sra=SRA553822&srs=SRS2119548).
 
 #### Accessing the list of available samples with specific expression patterns:
 To access the list of available samples with specific expression patterns you may use the `getMarkers()` function. This function returns the output of a query submitted through [here](https://panglaodb.se/search.html) in the PanglaoDB database. 
 
 As an example, below we show how to retrieve the list of clusters containing two specific types of Endothelial cells. This type of cells act as barriers between vessels and tissues [(Aman et al., 2016)](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5504427/). They are known to control the flow of substances and fluids into and out of a tissue. Endothelial cells line blood vessels and lymphatic vessels, they are found exclusively in vascularized tissue [(Bautch and Caron, 2015)](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4355271/). Endothelial cells can be classified on the basis of a set of marker genes, for example, Lymphatic Endothelial Cells [(LEC)](https://promocell.com/product/human-dermal-lymphatic-endothelial-cells-hdlec/) are PECAM and PDPN positive, meanwhile Blood Endothelial Cells [(BEC)](https://promocell.com/product/human-dermal-blood-endothelial-cells-hdbec/) are PECAM1 and VWF positive but negative for PDPN and ACTA2. 
 ```
-BEC <- getMarkers(include = c('PECAM1', 'VWF'), exclude = c('PDPN', 'ACTA2'))
-head(BEC)
+> BEC <- getMarkers(include = c('PECAM1', 'VWF'), exclude = c('PDPN', 'ACTA2'))
+> head(BEC)
 
         SRA        SRS       Specie                           Tissue Cluster         Cell-Type                Markers
 1 SRA646572 SRS2833946 Homo sapiens           Human embryo forebrain      28 Endothelial cells +PECAM1+VWF-PDPN-ACTA2
@@ -73,8 +73,8 @@ head(BEC)
 6 SRA594999 SRS2397417 Homo sapiens Umbilical vein endothelial cells       4           Unknown +PECAM1+VWF-PDPN-ACTA2
 ```
 ```
-LEC <- getMarkers(include = c('PECAM1', 'PDPN', 'PROX1'))
-head(LEC)
+> LEC <- getMarkers(include = c('PECAM1', 'PDPN', 'PROX1'))
+> head(LEC)
 
         SRA        SRS       Specie                             Tissue Cluster         Cell-Type            Markers
 1 SRA640325 SRS2769051 Homo sapiens Lung proximal airway stromal cells      17 Endothelial cells +PECAM1+PDPN+PROX1
@@ -83,4 +83,15 @@ head(LEC)
 4 SRA637291 SRS2749416 Mus musculus                     Left Ventricle      17 Endothelial cells +PECAM1+PDPN+PROX1
 5 SRA652149 SRS2862117 Mus musculus         Lateral geniculate nucleus      11      Interneurons +PECAM1+PDPN+PROX1
 6 SRA611634 SRS2532206 Mus musculus                               Lung      18 Endothelial cells +PECAM1+PDPN+PROX1
+```
+
+#### Downloading the count matrices:
+```
+> countsLEC <- getSamples(srs = unique(LEC$SRS), celltype = 'Endothelial cells', specie = 'Homo sapiens')
+|++++++++++++++++++++++++++++++++++++++++++++++++++| 100%
+
+> countsLEC
+An object of class Seurat 
+39551 features across 1124 samples within 1 assay 
+Active assay: RNA (39551 features, 0 variable features)
 ```
