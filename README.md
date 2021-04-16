@@ -53,7 +53,8 @@ head(BEC)
 4 SRA594999 SRS2397417 Homo sapiens Umbilical vein endothelial cells       2 Endothelial cells +PECAM1+VWF-PDPN-ACTA2
 5 SRA594999 SRS2397417 Homo sapiens Umbilical vein endothelial cells       3 Endothelial cells +PECAM1+VWF-PDPN-ACTA2
 6 SRA594999 SRS2397417 Homo sapiens Umbilical vein endothelial cells       4           Unknown +PECAM1+VWF-PDPN-ACTA2
-
+```
+```
 LEC <- getMarkers(include = c('PECAM1', 'PDPN', 'PROX1'))
 head(LEC)
 
