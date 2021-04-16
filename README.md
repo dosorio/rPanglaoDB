@@ -54,6 +54,7 @@ head(scSRS2119548)
 1.5 SRA553822 SRS2119548 Cultured embryonic stem cells 10x chromium Homo sapiens       4   220   Unknown
 1.6 SRA553822 SRS2119548 Cultured embryonic stem cells 10x chromium Homo sapiens       5   192   Unknown
 ```
+Retrieved information match with the SRS2119548 reported record from the PanglaoDB available [here](https://panglaodb.se/list_clusters_and_cell_types.html?sra=SRA553822&srs=SRS2119548)
 
 #### Accessing the list of available samples with specific expression patterns:
 To access the list of available samples with specific expression patterns you may use the `getMarkers()` function. This function returns the output of a query submitted through [here](https://panglaodb.se/search.html) in the PanglaoDB database. 
