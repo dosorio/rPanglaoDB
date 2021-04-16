@@ -8,13 +8,13 @@ This package required R version 4.0 or higher. If you are using an older version
 
 The official release of `rPanglaoDB` is available on CRAN. To install it from CRAN, you can use the following command:
 ```
-install.packages("rPanglaoDB", dependencies = TRUE)
+install.packages('rPanglaoDB', dependencies = TRUE)
 ```
 
 If you have `remotes` installed, you can install the latest stable version of `rPanglaoDB` package directly from GitHub:
 
 ```
-remotes::install_github("dosorio/rPanglaoDB")
+remotes::install_github('dosorio/rPanglaoDB')
 ```
 Usage
 -------
