@@ -41,7 +41,7 @@ head(samplesList)
 6 SRA689041 SRS3166675                           Colon 10x chromium Mus musculus  2878
 ```
 #### Accessing the list of available samples with specific expression patterns:
-To access the list of available samples with specific expression patterns you may use the `getMarkers()` function:
+To access the list of available samples with specific expression patterns you may use the `getMarkers()` function. This function returns the output of a query submitted through [here](https://panglaodb.se/search.html) in the PanglaoDB database. 
 
 As an example below we show how to collect two type of Endothelial cells. This type of cells act as barriers between vessels and tissues [(Aman et al., 2016)](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5504427/). They are known to control the flow of substances and fluids into and out of a tissue. Endothelial cells line blood vessels and lymphatic vessels, they are found exclusively in vascularized tissue [(Bautch and Caron, 2015)](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4355271/).
 ```
