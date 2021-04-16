@@ -108,3 +108,4 @@ countsLEC <- harmony::RunHarmony(countsLEC, group.by.vars = 'orig.ident')
 countsLEC <- Seurat::RunTSNE(countsLEC, reduction = 'harmony')
 Nebulosa::plot_density(countsLEC, features = c('PECAM1', 'PDPN', 'PROX1'), joint = TRUE)
 ```
+![HDLEC](https://raw.githubusercontent.com/dosorio/rPanglaoDB/master/inst/plots/HDLEC.png)
