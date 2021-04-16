@@ -42,6 +42,8 @@ head(samplesList)
 ```
 #### Accessing the list of available samples with specific expression patterns:
 To access the list of available samples with specific expression patterns you may use the `getMarkers()` function:
+
+As an example below we show how to collect two type of Endothelial cells. Endothelial cells act as barriers between vessels and tissues [(Aman et al., 2016)](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5504427/). They are known to control the flow of substances and fluids into and out of a tissue. Endothelial cells line blood vessels and lymphatic vessels, they are found exclusively in vascularized tissue [(Bautch and Caron, 2015)](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4355271/).
 ```
 BEC <- getMarkers(include = c('PECAM1', 'VWF'), exclude = c('PDPN', 'ACTA2'))
 head(BEC)
