@@ -95,3 +95,16 @@ An object of class Seurat
 39551 features across 1124 samples within 1 assay 
 Active assay: RNA (39551 features, 0 variable features)
 ```
+
+Post-processing using Seurat
+-------
+```
+set.seed(1)
+countsLEC <- Seurat::NormalizeData(countsLEC)
+countsLEC <- Seurat::FindVariableFeatures(countsLEC)
+countsLEC <- Seurat::ScaleData(countsLEC)
+countsLEC <- Seurat::RunPCA(countsLEC, verbose = FALSE)
+countsLEC <- harmony::RunHarmony(countsLEC, group.by.vars = 'orig.ident')
+countsLEC <- Seurat::RunTSNE(countsLEC, reduction = 'harmony')
+Nebulosa::plot_density(countsLEC, features = c('PECAM1', 'PDPN', 'PROX1'), joint = TRUE)
+```
