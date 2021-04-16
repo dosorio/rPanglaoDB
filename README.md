@@ -43,5 +43,21 @@ head(samplesList)
 #### Accessing the list of available samples with specific expression patterns:
 To access the list of available samples with specific expression patterns you may use the `getMarkers()` function:
 ```
+BEC <- getMarkers(include = c('PECAM1', 'VWF'), exclude = c('PDPN', 'ACTA2'))
+        SRA        SRS       Specie                           Tissue Cluster         Cell-Type                Markers
+1 SRA646572 SRS2833946 Homo sapiens           Human embryo forebrain      28 Endothelial cells +PECAM1+VWF-PDPN-ACTA2
+2 SRA646572 SRS2833947 Homo sapiens           Human embryo forebrain      24 Endothelial cells +PECAM1+VWF-PDPN-ACTA2
+3 SRA594999 SRS2397417 Homo sapiens Umbilical vein endothelial cells       0 Endothelial cells +PECAM1+VWF-PDPN-ACTA2
+4 SRA594999 SRS2397417 Homo sapiens Umbilical vein endothelial cells       2 Endothelial cells +PECAM1+VWF-PDPN-ACTA2
+5 SRA594999 SRS2397417 Homo sapiens Umbilical vein endothelial cells       3 Endothelial cells +PECAM1+VWF-PDPN-ACTA2
+6 SRA594999 SRS2397417 Homo sapiens Umbilical vein endothelial cells       4           Unknown +PECAM1+VWF-PDPN-ACTA2
 
+LEC <- getMarkers(include = c('PECAM1', 'PDPN', 'PROX1'))
+        SRA        SRS       Specie                             Tissue Cluster         Cell-Type            Markers
+1 SRA640325 SRS2769051 Homo sapiens Lung proximal airway stromal cells      17 Endothelial cells +PECAM1+PDPN+PROX1
+2 SRA703206 SRS3296613 Homo sapiens         Colon (Ulcerative Colitis)      15           Unknown +PECAM1+PDPN+PROX1
+3 SRA782908 SRS3815606 Homo sapiens                            Decidua      13 Endothelial cells +PECAM1+PDPN+PROX1
+4 SRA637291 SRS2749416 Mus musculus                     Left Ventricle      17 Endothelial cells +PECAM1+PDPN+PROX1
+5 SRA652149 SRS2862117 Mus musculus         Lateral geniculate nucleus      11      Interneurons +PECAM1+PDPN+PROX1
+6 SRA611634 SRS2532206 Mus musculus                               Lung      18 Endothelial cells +PECAM1+PDPN+PROX1
 ```
