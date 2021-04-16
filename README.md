@@ -6,7 +6,7 @@ Install
 -------
 This package required R version 4.0 or higher. If you are using an older version of R you will be prompted to upgrade when you try to install the package.
 
-The official release of `rPanglaoDB` is available on CRAN. To install from CRAN, use the following command:
+The official release of `rPanglaoDB` is available on CRAN. To install it from CRAN, you can use the following command:
 ```
 install.packages("rPanglaoDB", dependencies = TRUE)
 ```
@@ -23,7 +23,7 @@ As any other R package `rPanglaoDB` can be loaded using the `library` function a
 ```
 library(rPanglaoDB)
 ```
-#### Accessing the available samples:
+#### Accessing the list of available samples:
 To access the list of available samples deposited in the PanglaoDB database you may use the `getSamplesList()` function:
 ```
 samplesList <- getSampleList()
@@ -39,4 +39,9 @@ head(samplesList)
 4 SRA644036 SRS2808714 Cervical and lumbar spinal cord 10x chromium Mus musculus  1025
 5 SRA670243 SRS3078084                Ventral midbrain 10x chromium Mus musculus  5603
 6 SRA689041 SRS3166675                           Colon 10x chromium Mus musculus  2878
+```
+#### Accessing the list of available samples with specific expression patterns:
+To access the list of available samples with specific expression patterns you may use the `getMarkers()` function:
+```
+
 ```
