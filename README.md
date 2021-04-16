@@ -40,6 +40,21 @@ head(samplesList)
 5 SRA670243 SRS3078084                Ventral midbrain 10x chromium Mus musculus  5603
 6 SRA689041 SRS3166675                           Colon 10x chromium Mus musculus  2878
 ```
+#### Accessing the cellular composition of a sample:
+To access the cell-type content for each sample from the panglaoDB database you may use the `getSampleComposition` function. `getSampleComposition` returns the cell-type composition of the samples included in the PanglaoDB database in a data frame with 8 columns. For example, to recover the sample composition of the sample with SRS = SRS2119548 you may use the following code:
+```
+scSRS2119548 <- getSampleComposition(srs = 'SRS2119548')
+head(scSRS2119548)
+
+          SRA        SRS                        Tissue     Protocol      Species Cluster Cells Cell Type
+1.1 SRA553822 SRS2119548 Cultured embryonic stem cells 10x chromium Homo sapiens       0  1572   Unknown
+1.2 SRA553822 SRS2119548 Cultured embryonic stem cells 10x chromium Homo sapiens       1   563   Unknown
+1.3 SRA553822 SRS2119548 Cultured embryonic stem cells 10x chromium Homo sapiens       2   280   Unknown
+1.4 SRA553822 SRS2119548 Cultured embryonic stem cells 10x chromium Homo sapiens       3   270   Unknown
+1.5 SRA553822 SRS2119548 Cultured embryonic stem cells 10x chromium Homo sapiens       4   220   Unknown
+1.6 SRA553822 SRS2119548 Cultured embryonic stem cells 10x chromium Homo sapiens       5   192   Unknown
+```
+
 #### Accessing the list of available samples with specific expression patterns:
 To access the list of available samples with specific expression patterns you may use the `getMarkers()` function. This function returns the output of a query submitted through [here](https://panglaodb.se/search.html) in the PanglaoDB database. 
 
