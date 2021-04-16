@@ -96,7 +96,7 @@ An object of class Seurat
 Active assay: RNA (39551 features, 0 variable features)
 ```
 
-Post-processing using Seurat
+Post-processing
 -------
 ```
 set.seed(1)
