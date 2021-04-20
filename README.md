@@ -95,7 +95,8 @@ As an example, below we show how to retrieve the list of clusters containing two
 ```
 
 #### Downloading the count matrices:
-Once the desired samples to be downloaded are identified, the count matrices can be downloaded using the `getSamples` function. In the example below, we show how to download the set of Human Lymphatic Endothelial Cells applying two filters in the `getSample` function to the set of identified samples containing the desired phenotype (PECAM1+, PDPN+, PROX1+). The output of the function in this case is a `Seurat` object containing 1124 human endothelial cells. 
+Once the desired samples to be downloaded are identified, the count matrices can be downloaded using the `getSamples` function. In the example below, we show how to download the set of Human Lymphatic Endothelial Cells applying two filters in the `getSample` function to the set of identified samples containing the desired phenotype (PECAM1+, PDPN+, PROX1+). By default, the output of the function is a `Seurat` object with all the samples merged. In this case is an object containing 1124 human endothelial cells. 
+
 ```
 > countsLEC <- getSamples(srs = unique(LEC$SRS), celltype = 'Endothelial cells', specie = 'Homo sapiens')
 |++++++++++++++++++++++++++++++++++++++++++++++++++| 100%
@@ -104,6 +105,40 @@ Once the desired samples to be downloaded are identified, the count matrices can
 An object of class Seurat 
 39551 features across 1124 samples within 1 assay 
 Active assay: RNA (39551 features, 0 variable features)
+```
+Metadata associated with the downloaded count matrices can be accessed using the `[[]]` operator.
+```
+> head(countsLEC[[]])
+                 orig.ident nCount_RNA nFeature_RNA         CellTypes panglaoCluster                             Tissue       Specie
+AAACCTGTCAGTACGT SRS2769051       3137         1526 Endothelial cells             17 Lung proximal airway stromal cells Homo sapiens
+AAGGCAGAGGGAGTAA SRS2769051       1041          677 Endothelial cells             17 Lung proximal airway stromal cells Homo sapiens
+ACCTTTAAGTAGGTGC SRS2769051       2431         1239 Endothelial cells             17 Lung proximal airway stromal cells Homo sapiens
+ACGAGGAAGATGAGAG SRS2769051       2928         1470 Endothelial cells             17 Lung proximal airway stromal cells Homo sapiens
+ACGGAGACAAGCTGTT SRS2769051       1971         1028 Endothelial cells             17 Lung proximal airway stromal cells Homo sapiens
+AGACGTTGTGCCTTGG SRS2769051       1176          750 Endothelial cells             17 Lung proximal airway stromal cells Homo sapiens
+```
+
+Optionally if the unmerged samples are needed, you may set the `merge` parameter as `FALSE`. In this case the output is a list containing *n* number of `Seurat` objects as samples requested in the input. 
+```
+> countsLEC <- getSamples(srs = unique(LEC$SRS), celltype = 'Endothelial cells', specie = 'Homo sapiens', merge = FALSE)
+  |++++++++++++++++++++++++++++++++++++++++++++++++++| 100%
+  
+> countsLEC
+$SRS2769051
+An object of class Seurat 
+35225 features across 36 samples within 1 assay 
+Active assay: RNA (35225 features, 0 variable features)
+
+$SRS3296613
+An object of class Seurat 
+32131 features across 860 samples within 1 assay 
+Active assay: RNA (32131 features, 0 variable features)
+
+$SRS3815606
+An object of class Seurat 
+31724 features across 228 samples within 1 assay 
+Active assay: RNA (31724 features, 0 variable features)
+
 ```
 
 Post-processing
