@@ -16,6 +16,15 @@ If you have `remotes` installed, you can install the latest stable version of `r
 ```
 > remotes::install_github('dosorio/rPanglaoDB')
 ```
+Available functions
+-------
+| Code        | Function |
+| :------------- |:-------------|
+|getMarkers|	Return a `data frame` with the list of samples from the panglaoDB database with a pattern of expression for a set of molecular markers.|
+|getSampleComposition| Return a `data frame` with the the cell-type content for each sample from the panglaoDB database.|
+|getSampleList| Return a `data frame` with the list of samples available at the panglaoDB database.|
+|getSamples| Download and return the expression matrix and annotations from the panglaoDB database in a `Seurat` object. |
+
 Usage
 -------
 #### Loading the package:
