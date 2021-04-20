@@ -6,7 +6,7 @@ Install
 -------
 This package requires `R` version 4.0 or higher. If you are using an older version of `R` you will be prompted to upgrade when you try to install the package.
 
-The official release of `rPanglaoDB` is available on [CRAN](https://CRAN.R-project.org/package=rPanglaoDB). To install it from CRAN, you can use the following command:
+The official release of `rPanglaoDB` is available on [CRAN](https://CRAN.R-project.org/package=rPanglaoDB). To install it from there, you can use the following command:
 ```
 > install.packages('rPanglaoDB', dependencies = TRUE)
 ```
@@ -20,7 +20,7 @@ Available functions
 -------
 | Code        | Function |
 | :------------- |:-------------|
-|getMarkers|	Return a `data frame` with the list of samples from the panglaoDB database with a pattern of expression for a set of molecular markers.|
+|getMarkers|	Return a `data frame` with the list of samples from the panglaoDB database exhibiting a pattern of expression for a set of molecular markers.|
 |getSampleComposition| Return a `data frame` with the the cell-type content for each sample from the panglaoDB database.|
 |getSampleList| Return a `data frame` with the list of samples available at the panglaoDB database.|
 |getSamples| Download and return the expression matrix and annotations from the panglaoDB database in a `Seurat` object. |
@@ -50,7 +50,7 @@ This function returns a ``data frame`` with 6 columns matching with the informat
 6 SRA689041 SRS3166675                           Colon 10x chromium Mus musculus  2878
 ```
 #### Accessing the cellular composition of a sample:
-To access the cell-type content for each sample from the panglaoDB database you may use the `getSampleComposition` function. `getSampleComposition` returns the cell-type composition of the samples included in the PanglaoDB database in a data frame with 8 columns. For example, to recover the sample composition of the sample with SRS = SRS2119548 you may use the following code:
+To access the cell-type content for each sample from the panglaoDB database you may use the `getSampleComposition` function. This function returns the cell-type composition of the samples included in the PanglaoDB database in a `data frame` with 8 columns. For example, to retrieve the sample composition of the sample with SRS = SRS2119548 you may use the following code:
 ```
 > scSRS2119548 <- getSampleComposition(srs = 'SRS2119548')
 > head(scSRS2119548)
