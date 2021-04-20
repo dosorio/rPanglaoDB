@@ -108,6 +108,7 @@ Active assay: RNA (39551 features, 0 variable features)
 
 Post-processing
 -------
+Once downloaded the desired samples, some postprocessing is required to identify the cells exhibiting the desired phenotype. For that purpose, here we show the process how to integrate all the samples using [Seurat](https://CRAN.R-project.org/package=Seurat) and [Harmony](https://github.com/immunogenomics/harmony). The cluster exhibiting the desired phenotype is identified using the [Nebulosa](https://bioconductor.org/packages/Nebulosa/) package.
 ```
 set.seed(1)
 countsLEC <- Seurat::NormalizeData(countsLEC)
@@ -115,7 +116,15 @@ countsLEC <- Seurat::FindVariableFeatures(countsLEC)
 countsLEC <- Seurat::ScaleData(countsLEC)
 countsLEC <- Seurat::RunPCA(countsLEC, verbose = FALSE)
 countsLEC <- harmony::RunHarmony(countsLEC, group.by.vars = 'orig.ident')
+countsLEC <- Seurat::FindNeighbors(countsLEC, reduction = 'harmony')
+countsLEC <- Seurat::FindClusters(countsLEC)
 countsLEC <- Seurat::RunTSNE(countsLEC, reduction = 'harmony')
 Nebulosa::plot_density(countsLEC, features = c('PECAM1', 'PDPN', 'PROX1'), joint = TRUE)
 ```
 ![HDLEC](https://raw.githubusercontent.com/dosorio/rPanglaoDB/master/inst/plots/HDLEC.png)
+
+In this example, cluster 4 containing 121 cells is the one with constitutive expression of PECAM1, PDPN, and PROX1.
+```
+Seurat::DotPlot(countsLEC, features = c('PECAM1', 'PDPN', 'PROX1')) + ggplot2::coord_flip()
+```
+![cHDLEC](https://raw.githubusercontent.com/dosorio/rPanglaoDB/master/inst/plots/c4HDLEC.png)
