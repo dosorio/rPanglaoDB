@@ -123,7 +123,7 @@ Nebulosa::plot_density(countsLEC, features = c('PECAM1', 'PDPN', 'PROX1'), joint
 ```
 ![HDLEC](https://raw.githubusercontent.com/dosorio/rPanglaoDB/master/inst/plots/HDLEC.png)
 
-In this example, cluster 4 containing 121 Human Lymphatic Endothelial Cells with constitutive expression of PECAM1, PDPN, and PROX1.
+In this example, cluster 4 is the one containing 121 Human Lymphatic Endothelial Cells with constitutive expression of PECAM1, PDPN, and PROX1.
 ```
 Seurat::DotPlot(countsLEC, features = c('PECAM1', 'PDPN', 'PROX1')) + ggplot2::coord_flip()
 ```
