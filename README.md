@@ -127,4 +127,5 @@ In this example, cluster 4 containing 121 cells is the one with constitutive exp
 ```
 Seurat::DotPlot(countsLEC, features = c('PECAM1', 'PDPN', 'PROX1')) + ggplot2::coord_flip()
 ```
-![cHDLEC](https://raw.githubusercontent.com/dosorio/rPanglaoDB/master/inst/plots/c4HDLEC.png)
+![cellsHDLEC](https://raw.githubusercontent.com/dosorio/rPanglaoDB/master/inst/plots/cellsHDLEC.png)
+
