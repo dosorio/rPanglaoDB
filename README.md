@@ -4,9 +4,9 @@ R package to download and merge labeled single-cell RNA-seq data from the Pangla
 
 Install
 -------
-This package required R version 4.0 or higher. If you are using an older version of R you will be prompted to upgrade when you try to install the package.
+This package requires `R` version 4.0 or higher. If you are using an older version of `R` you will be prompted to upgrade when you try to install the package.
 
-The official release of `rPanglaoDB` is available on CRAN. To install it from CRAN, you can use the following command:
+The official release of `rPanglaoDB` is available on (CRAN)[https://CRAN.R-project.org/package=rPanglaoDB]. To install it from CRAN, you can use the following command:
 ```
 > install.packages('rPanglaoDB', dependencies = TRUE)
 ```
