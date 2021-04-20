@@ -143,7 +143,7 @@ Active assay: RNA (31724 features, 0 variable features)
 
 Post-processing
 -------
-Once downloaded the desired samples, some postprocessing is required to identify the cells exhibiting the desired phenotype. For that purpose, here we show the process how to integrate all the samples using [Seurat](https://CRAN.R-project.org/package=Seurat) and [Harmony](https://github.com/immunogenomics/harmony). The cluster exhibiting the desired phenotype is identified using the [Nebulosa](https://bioconductor.org/packages/Nebulosa/) package.
+Once downloaded and merged the desired samples, some postprocessing is required to identify the cells exhibiting the desired phenotype. For that purpose, here we show the process how to integrate all the samples using [Seurat](https://CRAN.R-project.org/package=Seurat) and [Harmony](https://github.com/immunogenomics/harmony). The cluster exhibiting the desired phenotype is identified using the [Nebulosa](https://bioconductor.org/packages/Nebulosa/) package.
 ```
 set.seed(1)
 countsLEC <- Seurat::NormalizeData(countsLEC)
