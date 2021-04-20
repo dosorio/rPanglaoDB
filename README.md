@@ -95,7 +95,7 @@ As an example, below we show how to retrieve the list of clusters containing two
 ```
 
 #### Downloading the count matrices:
-Once the desired samples to be downloaded are identified, the count matrices can be downloaded using the `getSamples` function. 
+Once the desired samples to be downloaded are identified, the count matrices can be downloaded using the `getSamples` function. In the example below, we show how to download the set of Human Lymphatic Endothelial Cells applying two filters in the `getSample` function to the set of identified samples containing the desired phenotype (PECAM1+, PDPN+, PROX1+). The output of the function in this case is a `Seurat` object containing 1124 human endothelial cells. 
 ```
 > countsLEC <- getSamples(srs = unique(LEC$SRS), celltype = 'Endothelial cells', specie = 'Homo sapiens')
 |++++++++++++++++++++++++++++++++++++++++++++++++++| 100%
