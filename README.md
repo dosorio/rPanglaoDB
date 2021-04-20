@@ -164,3 +164,19 @@ Seurat::DotPlot(countsLEC, features = c('PECAM1', 'PDPN', 'PROX1')) + ggplot2::c
 ```
 ![cellsHDLEC](https://raw.githubusercontent.com/dosorio/rPanglaoDB/master/inst/plots/cellsHDLEC.png)
 
+Citation
+-------
+To cite package `rPanglaoDB` in publications use:
+```
+  Daniel Osorio, Marieke Kuijjer and James J. Cai (2021). rPanglaoDB: Download and Merge Single-Cell RNA-Seq Data from the PanglaoDB Database. R package. https://CRAN.R-project.org/package=rPanglaoDB
+```
+A `BibTeX` entry for `LaTeX` users is
+```
+  @Manual{,
+    title = {rPanglaoDB: Download and Merge Single-Cell RNA-Seq Data from the PanglaoDB Database},
+    author = {Daniel Osorio and Marieke Kuijjer and James J. Cai},
+    year = {2021},
+    note = {R package},
+    url = {https://CRAN.R-project.org/package=rPanglaoDB},
+  }
+```
