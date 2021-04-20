@@ -1,6 +1,6 @@
 rPanglaoDB 
 ========
-R package to download and merge labeled single-cell RNA-seq data from the PanglaoDB database into a Seurat object.
+R package to download and merge labeled single-cell RNA-seq data from the [PanglaoDB](https://panglaodb.se/) database into a [Seurat](https://CRAN.R-project.org/package=Seurat) object.
 
 Install
 -------
