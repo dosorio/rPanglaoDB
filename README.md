@@ -145,22 +145,26 @@ Post-processing
 -------
 Once downloaded and merged the desired samples, some postprocessing is required to identify the cells exhibiting the desired phenotype. For that purpose, here we show the process how to integrate all the samples using [Seurat](https://CRAN.R-project.org/package=Seurat) and [Harmony](https://github.com/immunogenomics/harmony). The cluster exhibiting the desired phenotype is identified using the [Nebulosa](https://bioconductor.org/packages/Nebulosa/) package.
 ```
-set.seed(1)
-countsLEC <- Seurat::NormalizeData(countsLEC)
-countsLEC <- Seurat::FindVariableFeatures(countsLEC)
-countsLEC <- Seurat::ScaleData(countsLEC)
-countsLEC <- Seurat::RunPCA(countsLEC, verbose = FALSE)
-countsLEC <- harmony::RunHarmony(countsLEC, group.by.vars = 'orig.ident')
-countsLEC <- Seurat::FindNeighbors(countsLEC, reduction = 'harmony')
-countsLEC <- Seurat::FindClusters(countsLEC)
-countsLEC <- Seurat::RunTSNE(countsLEC, reduction = 'harmony')
-Nebulosa::plot_density(countsLEC, features = c('PECAM1', 'PDPN', 'PROX1'), joint = TRUE)
+> set.seed(1)
+> countsLEC <- Seurat::NormalizeData(countsLEC)
+> countsLEC <- Seurat::FindVariableFeatures(countsLEC)
+> countsLEC <- Seurat::ScaleData(countsLEC)
+> countsLEC <- Seurat::RunPCA(countsLEC, verbose = FALSE)
+> countsLEC <- harmony::RunHarmony(countsLEC, group.by.vars = 'orig.ident')
+> countsLEC <- Seurat::FindNeighbors(countsLEC, reduction = 'harmony')
+> countsLEC <- Seurat::FindClusters(countsLEC)
+> countsLEC <- Seurat::RunTSNE(countsLEC, reduction = 'harmony')
+> Nebulosa::plot_density(countsLEC, features = c('PECAM1', 'PDPN', 'PROX1'), joint = TRUE)
 ```
 ![HDLEC](https://raw.githubusercontent.com/dosorio/rPanglaoDB/master/inst/plots/HDLEC.png)
 
 In this example, cluster 4 is the one containing 121 Human Lymphatic Endothelial Cells with constitutive expression of PECAM1, PDPN, and PROX1.
 ```
-Seurat::DotPlot(countsLEC, features = c('PECAM1', 'PDPN', 'PROX1')) + ggplot2::coord_flip()
+> Seurat::DotPlot(countsLEC, features = c('PECAM1', 'PDPN', 'PROX1')) + ggplot2::coord_flip()
+
+> table(Seurat::Idents(countsLEC))
+  0   1   2   3   4   5   6   7   8   9 
+220 192 191 152 121  93  78  27  25  25 
 ```
 ![cellsHDLEC](https://raw.githubusercontent.com/dosorio/rPanglaoDB/master/inst/plots/cellsHDLEC.png)
 
