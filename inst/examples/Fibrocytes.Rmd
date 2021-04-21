@@ -71,7 +71,7 @@ DotPlot(object = FibrocytesCounts,
 ```{r}
 table(Idents(FibrocytesCounts))
 ```
-```{r message=TRUE, warning=FALSE}
+```{r message=TRUE, warning=FALSE, results= FALSE}
 deFibrocytes <- FindMarkers(object = FibrocytesCounts, ident.1 = 8, test.use = 'MAST', verbose = FALSE)
 ```
 ```{r message=FALSE, warning=FALSE}
@@ -98,7 +98,7 @@ enrichmentFibrocytes$leadingEdge <- unlist(lapply(enrichmentFibrocytes$leadingEd
 enrichmentFibrocytes[order(enrichmentFibrocytes$NES, decreasing = TRUE),]
 ```
 
-```{r}
+```{r, warning=FALSE, results= FALSE}
 sseBIOP <- gsva(as.matrix(FibrocytesCounts@assays$RNA@data), BIOP, method = 'ssgsea')
 ```
 ```{r}
