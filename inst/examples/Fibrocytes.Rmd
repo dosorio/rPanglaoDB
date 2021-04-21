@@ -1,0 +1,81 @@
+---
+title: "Application Case 1: Fibrocytes"
+output: html_notebook
+---
+
+### Loading Libraries
+```{r message=FALSE, warning=FALSE}
+library(rPanglaoDB)
+library(Seurat)
+library(harmony)
+library(Nebulosa)
+library(ggplot2)
+library(ggrepel)
+library(fgsea)
+```
+
+```{r}
+FibrocytesClusters <- getMarkers(
+  include = c('ACTA2','CD34', 'COL5A1', 'COL5A2', 'COL5A3', 'FAP'), 
+  exclude = 'CSF1R')
+
+FibrocytesClusters
+```
+```{r}
+FibrocytesCounts <- getSamples(tissue = 'Dermis', specie = 'Mus musculus', celltype = 'Fibroblasts')
+```
+```{r message=FALSE, warning=FALSE}
+FibrocytesCounts <- NormalizeData(FibrocytesCounts, verbose = FALSE)
+FibrocytesCounts <- ScaleData(FibrocytesCounts, verbose = FALSE)
+FibrocytesCounts <- FindVariableFeatures(FibrocytesCounts, verbose = FALSE)
+FibrocytesCounts <- RunPCA(FibrocytesCounts, verbose = FALSE)
+FibrocytesCounts <- RunHarmony(FibrocytesCounts, 
+                               group.by.vars = 'orig.ident', 
+                               max.iter.harmony = 50, 
+                               verbose = FALSE)
+FibrocytesCounts <- RunTSNE(FibrocytesCounts, reduction = 'harmony', dims = 1:10)
+TSNEPlot(FibrocytesCounts) + theme_bw() + xlab('t-SNE 1') + ylab('t-SNE 2')
+```
+
+```{r message=FALSE, warning=FALSE}
+FibrocytesCounts <- FindNeighbors(FibrocytesCounts, reduction = 'harmony', verbose = FALSE)
+FibrocytesCounts <- FindClusters(FibrocytesCounts, verbose = FALSE)
+TSNEPlot(FibrocytesCounts, label = TRUE) + theme_bw() + xlab('t-SNE 1') + ylab('t-SNE 2') + theme(legend.position = 'None')
+```
+
+
+```{r fig.height=5, fig.width=10}
+plot_density(object = FibrocytesCounts, 
+             features = c('ACTA2','CD34', 'COL5A1', 'COL5A2', 'COL5A3', 'FAP'), 
+             joint = FALSE)
+```
+```{r fig.height=5, fig.width=6}
+P <- plot_density(object = FibrocytesCounts, 
+                  features = c('ACTA2','CD34', 'COL5A1', 'COL5A2', 'COL5A3', 'FAP'), 
+                  joint = TRUE)
+P[[7]]
+```
+
+```{r}
+DotPlot(object = FibrocytesCounts, 
+        features = c('ACTA2','CD34', 'COL5A1', 'COL5A2', 'COL5A3', 'FAP')) + 
+  coord_flip()
+```
+```{r}
+table(Idents(FibrocytesCounts))
+```
+```{r message=TRUE, warning=FALSE}
+deFibrocytes <- FindMarkers(object = FibrocytesCounts, ident.1 = 8, test.use = 'MAST', verbose = FALSE)
+```
+```{r message=FALSE, warning=FALSE}
+deFibrocytes$g <- rownames(deFibrocytes)
+deFibrocytes$g[abs(deFibrocytes$avg_log2FC) < 1] <- NA
+deFibrocytes$F <- log2(deFibrocytes$pct.1/deFibrocytes$pct.2)
+deFibrocytes$g[abs(deFibrocytes$F) < 1] <- NA
+ggplot(deFibrocytes, mapping = aes(avg_log2FC, -log10(p_val), label = g)) + 
+  geom_point() + 
+  geom_text_repel() + 
+  theme_bw() + xlab(log[2]~(Avg~Fold-change)) +
+  ylab(-log[10]~(P-value))
+
+```
