@@ -99,10 +99,10 @@ enrichmentFibrocytes[order(enrichmentFibrocytes$NES, decreasing = TRUE),]
 ```
 
 ```{r}
-cellType <- ifelse(FibrocytesCounts$seurat_clusters == 8, 'Fibrocytes', 'Fibroblasts')
 sseBIOP <- gsva(as.matrix(FibrocytesCounts@assays$RNA@data), BIOP, method = 'ssgsea')
 ```
 ```{r}
+cellType <- ifelse(FibrocytesCounts$seurat_clusters %in% 8, 'Fibrocytes', 'Fibroblasts')
 esFibrocytes <- data.frame(ES = sseBIOP['Prostaglandin biosynthesis and regulation',], CT = cellType)
 ggplot(esFibrocytes, aes(CT, ES)) + 
   geom_violin() + 
