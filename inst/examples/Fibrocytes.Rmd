@@ -1,6 +1,10 @@
 ---
-title: "Application Case 1: Fibrocytes"
-output: html_notebook
+title: 'Application Case 1: Fibrocytes'
+output:
+  html_notebook: default
+  html_document:
+    df_print: paged
+  pdf_document: default
 ---
 
 ### Loading Libraries
@@ -12,6 +16,9 @@ library(Nebulosa)
 library(ggplot2)
 library(ggrepel)
 library(fgsea)
+library(GSVA)
+library(statsExpressions)
+BIOP <- gmtPathways('https://maayanlab.cloud/Enrichr/geneSetLibrary?mode=text&libraryName=BioPlanet_2019')
 ```
 
 ```{r}
@@ -53,7 +60,7 @@ plot_density(object = FibrocytesCounts,
 P <- plot_density(object = FibrocytesCounts, 
                   features = c('ACTA2','CD34', 'COL5A1', 'COL5A2', 'COL5A3', 'FAP'), 
                   joint = TRUE)
-P[[7]]
+P[[7]] + theme_bw() + xlab('t-SNE 1') + ylab('t-SNE 2') + theme(legend.position = 'None')
 ```
 
 ```{r}
@@ -72,10 +79,37 @@ deFibrocytes$g <- rownames(deFibrocytes)
 deFibrocytes$g[abs(deFibrocytes$avg_log2FC) < 1] <- NA
 deFibrocytes$F <- log2(deFibrocytes$pct.1/deFibrocytes$pct.2)
 deFibrocytes$g[abs(deFibrocytes$F) < 1] <- NA
+deFibrocytes$color <- 'black'
+deFibrocytes$color[deFibrocytes$avg_log2FC > 1] <- 'red'
+deFibrocytes$color[deFibrocytes$avg_log2FC < -1] <- 'blue'
 ggplot(deFibrocytes, mapping = aes(avg_log2FC, -log10(p_val), label = g)) + 
-  geom_point() + 
+  geom_point(color = deFibrocytes$color, alpha = 0.5) + 
   geom_text_repel() + 
   theme_bw() + xlab(log[2]~(Avg~Fold-change)) +
   ylab(-log[10]~(P-value))
 
+```
+```{r message=FALSE, warning=FALSE}
+log2FC <- deFibrocytes$avg_log2FC
+names(log2FC) <- rownames(deFibrocytes)
+enrichmentFibrocytes <- fgseaMultilevel(BIOP, log2FC)
+enrichmentFibrocytes <- enrichmentFibrocytes[enrichmentFibrocytes$padj < 0.05,]
+enrichmentFibrocytes$leadingEdge <- unlist(lapply(enrichmentFibrocytes$leadingEdge, function(X){paste0(X, collapse = ';')}))
+enrichmentFibrocytes[order(enrichmentFibrocytes$NES, decreasing = TRUE),]
+```
+
+```{r}
+cellType <- ifelse(FibrocytesCounts$seurat_clusters == 8, 'Fibrocytes', 'Fibroblasts')
+sseBIOP <- gsva(as.matrix(FibrocytesCounts@assays$RNA@data), BIOP, method = 'ssgsea')
+```
+```{r}
+esFibrocytes <- data.frame(ES = sseBIOP['Prostaglandin biosynthesis and regulation',], CT = cellType)
+ggplot(esFibrocytes, aes(CT, ES)) + 
+  geom_violin() + 
+  geom_boxplot(width = 0.1) + 
+  theme_bw() +
+  xlab('Cell Type') +
+  ylab('Enrichment Score') +
+  labs(title = 'Prostaglandin biosynthesis and regulation', 
+       subtitle = expr_t_nonparametric(esFibrocytes, CT, ES))
 ```
