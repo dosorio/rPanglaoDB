@@ -1,0 +1,38 @@
+---
+title: 'Application Case 2: Endothelial cells'
+---
+
+### Loading Libraries
+```{r message=FALSE, warning=FALSE}
+library(rPanglaoDB)
+library(Seurat)
+library(harmony)
+library(Nebulosa)
+library(ggplot2)
+library(ggrepel)
+library(fgsea)
+library(GSVA)
+library(statsExpressions)
+BIOP <- gmtPathways('https://maayanlab.cloud/Enrichr/geneSetLibrary?mode=text&libraryName=BioPlanet_2019')
+```
+
+```{r}
+# BEC <- getMarkers(include = c('PECAM1', 'VWF'), exclude = c('PDPN', 'ACTA2'))
+# countsBEC <- getSamples(srs = BEC$SRS, 
+#                         specie = 'Homo sapiens', 
+#                         celltype = 'Endothelial cells', 
+#                         include = c('PECAM1', 'VWF'), 
+#                         exclude = c('PDPN', 'ACTA2'))
+```
+
+```{r}
+LEC <- getMarkers(include = c('PECAM1', 'PDPN', 'PROX1'))
+```
+
+
+```{r}
+countsLEC <- getSamples(srs = unique(LEC$SRS), 
+                  specie = 'Homo sapiens', 
+                  celltype = 'Endothelial cells', 
+                  include = c('PECAM1', 'PDPN', 'PROX1'))
+```
