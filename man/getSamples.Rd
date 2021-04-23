@@ -11,6 +11,8 @@ getSamples(
   protocol = "All",
   specie = "All",
   celltype = "All",
+  include = NA,
+  exclude = NA,
   merge = TRUE
 )
 }
@@ -26,6 +28,10 @@ getSamples(
 \item{specie}{Filter based on the specie from which the biological samples originates from}
 
 \item{celltype}{Filter based on the cell-type from which the counts originates from}
+
+\item{include}{A set of molecular markers to filter the dataset. This set of genes needs to be expressed in each cell.}
+
+\item{exclude}{A set of molecular markers to filter the dataset. This set of genes needs to be absent in each cell.}
 
 \item{merge}{A boolean value TRUE or FALSE defining if the samples should be returned as a list or as a unique Seurat object}
 }
