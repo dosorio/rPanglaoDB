@@ -10,6 +10,8 @@
 #' @param protocol Filter based on the single-cell library preparation protocol used to generate the data
 #' @param specie Filter based on the specie from which the biological samples originates from
 #' @param celltype Filter based on the cell-type from which the counts originates from
+#' @param include A set of molecular markers to filter the dataset. This set of genes needs to be expressed in each cell.
+#' @param exclude A set of molecular markers to filter the dataset. This set of genes needs to be absent in each cell.
 #' @param merge A boolean value TRUE or FALSE defining if the samples should be returned as a list or as a unique Seurat object
 #' @return A Seurat object, as described in \code{?SeuratObject::`Seurat-class`}
 #' @examples
@@ -27,7 +29,7 @@
 #' # Metadata from the PanglaoDB database can be accessed as follows:
 #' # head(SRS4139632[[]])
 
-getSamples <- function(sra = 'All', srs = 'All', tissue = 'All', protocol = 'All', specie = 'All', celltype='All', merge = TRUE){
+getSamples <- function(sra = 'All', srs = 'All', tissue = 'All', protocol = 'All', specie = 'All', celltype='All', include = NA, exclude = NA, merge = TRUE){
   # SampleList
   sampleList <- getSampleList()
 
@@ -85,8 +87,7 @@ getSamples <- function(sra = 'All', srs = 'All', tissue = 'All', protocol = 'All
   dataSets <- pbapply::pbapply(sampleList,1, function(X){
     try(load(url(paste0("https://panglaodb.se/data_dl.php?sra=",X[1],"&srs=",X[2],"&filetype=R&datatype=readcounts"))), silent = TRUE)
     if(exists('sm')){
-      gList <- rownames(sm)
-      rownames(sm) <- unlist(lapply(strsplit(gList, '-ENS|_ENS'), function(X){X[1]}))
+      rownames(sm) <- unlist(lapply(strsplit(rownames(sm), '-ENS|_ENS'), function(X){X[1]}))
       sm <- sm[rowSums(sm) > 0,]
       cNames <- getSampleComposition(srs = as.character(X[2]), verbose = FALSE)
       rownames(cNames) <- cNames$Cluster
@@ -100,12 +101,38 @@ getSamples <- function(sra = 'All', srs = 'All', tissue = 'All', protocol = 'All
       sm <- suppressWarnings(Seurat::CreateSeuratObject(sm, project = as.character(X[2])))
       cellTypes <- cNames[as.character(cClusters),]$`Cell Type`
       names(cellTypes) <- colnames(sm)
+      sm$Sample <- sm$orig.ident
       sm$CellTypes <- cellTypes
       sm$panglaoCluster <- as.character(cClusters)
       sm$Tissue <- X[['Tissue']]
       sm <- subset(sm, cells = colnames(sm)[sm$CellTypes %in% CellType])
       sm$CellTypes[sm$CellTypes %in% 'Unknown'] <- NA
       sm$Specie <- X[['Species']]
+
+      # Filtering by genes
+      include <- include[include %in% rownames(sm@assays$RNA@counts)]
+      exclude <- exclude[exclude %in% rownames(sm@assays$RNA@counts)]
+      filterCells <- FALSE
+      if(length(include) > 0){
+        include <- colMeans(sm@assays$RNA@counts[include, , drop = FALSE] != 0) == 1
+        filterCells <- TRUE
+      } else{
+        include <- rep(TRUE, ncol(sm))
+      }
+      if(length(exclude) > 0){
+        exclude <- colMeans(sm@assays$RNA@counts[exclude, , drop = FALSE] != 0) != 0
+        filterCells <- TRUE
+      } else {
+        exclude <- rep(FALSE, ncol(sm))
+      }
+      if(isTRUE(filterCells)){
+        filterCells <- (include & !exclude)
+        if(any(filterCells)){
+          sm <- subset(sm, cells = colnames(sm)[filterCells])
+        } else {
+          sm <- list()
+        }
+      }
       closeAllConnections()
     } else {
       sm <- list()
