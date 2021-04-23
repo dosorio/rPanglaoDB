@@ -2,9 +2,6 @@
 title: 'Application Case 1: Fibrocytes'
 output:
   html_notebook: default
-  html_document:
-    df_print: paged
-  pdf_document: default
 ---
 
 ### Loading Libraries
