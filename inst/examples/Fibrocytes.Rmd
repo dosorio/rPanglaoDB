@@ -1,10 +1,10 @@
 ---
-title: 'Application Case 1: Fibrocytes'
+title: 'Application Case: Fibrocytes'
 output:
   html_notebook: default
 ---
 
-### Loading Libraries
+Loading Libraries
 ```{r message=FALSE, warning=FALSE}
 library(rPanglaoDB)
 library(Seurat)
@@ -61,7 +61,7 @@ P[[7]] + theme_bw() + xlab('t-SNE 1') + ylab('t-SNE 2') + theme(legend.position 
 ```
 
 ```{r}
-DotPlot(object = FibrocytesCounts, 
+DotPlot(object = FibrocytesCounts, scale.by = 'radius', scale = TRUE, dot.min = 0.4, 
         features = c('ACTA2','CD34', 'COL5A1', 'COL5A2', 'COL5A3', 'FAP')) + 
   coord_flip()
 ```
@@ -71,6 +71,7 @@ table(Idents(FibrocytesCounts))
 ```{r message=TRUE, warning=FALSE, results= FALSE}
 deFibrocytes <- FindMarkers(object = FibrocytesCounts, ident.1 = 8, test.use = 'MAST', verbose = FALSE)
 ```
+
 ```{r message=FALSE, warning=FALSE}
 deFibrocytes$g <- rownames(deFibrocytes)
 deFibrocytes$g[abs(deFibrocytes$avg_log2FC) < 1] <- NA
