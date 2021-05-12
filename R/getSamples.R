@@ -85,7 +85,8 @@ getSamples <- function(sra = 'All', srs = 'All', tissue = 'All', protocol = 'All
   }
 
   dataSets <- pbapply::pbapply(sampleList,1, function(X){
-    try(load(url(paste0("https://panglaodb.se/data_dl.php?sra=",X[1],"&srs=",X[2],"&filetype=R&datatype=readcounts"))), silent = TRUE)
+    oConnection <- url(paste0("https://panglaodb.se/data_dl.php?sra=",X[1],"&srs=",X[2],"&filetype=R&datatype=readcounts"))
+    try(load(oConnection), silent = TRUE)
     if(exists('sm')){
       rownames(sm) <- unlist(lapply(strsplit(rownames(sm), '-ENS|_ENS'), function(X){X[1]}))
       sm <- sm[rowSums(sm) > 0,]
@@ -133,7 +134,7 @@ getSamples <- function(sra = 'All', srs = 'All', tissue = 'All', protocol = 'All
           sm <- list()
         }
       }
-      closeAllConnections()
+      close.connection(oConnection)
     } else {
       sm <- list()
     }
