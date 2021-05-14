@@ -1,33 +1,39 @@
 ---
-title: 'Application Case: Fibrocytes'
+title: 'rPanglaoDB Application Case: **Fibrocytes**'
 output:
   html_notebook: default
 ---
-
-Loading Libraries
+To show the potential of rPanglaoDB for collecting rare cell types by integrating multiple public datasets, we present a biological application collecting and characterizing a set of fibrocytes.
 ```{r message=FALSE, warning=FALSE}
+set.seed(1)
 library(rPanglaoDB)
 library(Seurat)
 library(harmony)
 library(Nebulosa)
 library(ggplot2)
 library(ggrepel)
+library(enrichR)
 library(fgsea)
 library(GSVA)
 library(statsExpressions)
 BIOP <- gmtPathways('https://maayanlab.cloud/Enrichr/geneSetLibrary?mode=text&libraryName=BioPlanet_2019')
 ```
+Fibrocytes are marrow-derived cells that can differentiate into fibroblasts from monocyte precursors. These cells exhibit both the inflammatory features of macrophages and the tissue remodeling properties of fibroblasts. They are present at wound sites where they participate in tissue injury repair and remodeling [[21597472]](https://pubmed.ncbi.nlm.nih.gov/21597472/). Due to the lack of an unbiased characterization of their transcriptome, their marker genes are missed in all the databases used by the tools designed to assign cell-types automatically from single-cell RNA-seq data such as [MSigDB](http://www.gsea-msigdb.org/gsea/msigdb/genesets.jsp?collection=C8) [[21546393]](https://pubmed.ncbi.nlm.nih.gov/21546393/), [ClusterMole](https://cran.rstudio.com/web/packages/clustermole/index.html), and [PanglaoDB](https://panglaodb.se/markers.html?cell_type=%27choose%27) [[30951143]](https://pubmed.ncbi.nlm.nih.gov/30951143/).  Fibrocytes differentiate from fibroblasts and macrophages by expressing *CD34* [[8790603](https://pubmed.ncbi.nlm.nih.gov/8790603/), [19834619](https://pubmed.ncbi.nlm.nih.gov/19834619/)]. They differentiate also from macrophages by expressing *ACTA2*, *FAP*, *FN1*, *COL5A1*, *COL5A2*, *COL5A3*, *CD90*, and the lack of *CSF1R*, and also differentiate from fibroblasts by expressing *CHIT1*, *MME*, *SIRPA*, *PTPRC*, and *ICAM1* among others [[21597472]](https://pubmed.ncbi.nlm.nih.gov/21597472/).
 
+Using the `getMarkers` function, we identified a cluster of cells in the [SRS3121028](https://www.ncbi.nlm.nih.gov/sra/?term=SRR6936914) sample derived from skin wound tissues (3 days after scab detachment) expressing *CD34*, *ACTA2*, *FN1*, *Collagen V*, *FAP*, *SIRPA* and the lack of expression of *CSF1R*. Genes that differentiate fibrocytes from macrophages and fibroblasts [[30464171]](https://pubmed.ncbi.nlm.nih.gov/30464171/)(Lim, et al., 2018; Pilling, et al., 2009; Reilkoff, et al., 2011).
 ```{r}
 FibrocytesClusters <- getMarkers(
-  include = c('ACTA2','CD34', 'COL5A1', 'COL5A2', 'COL5A3', 'FAP'), 
+  include = c('CD34', 'ACTA2', 'FN1', 'COL5A1', 'COL5A2', 'COL5A3', 'FAP', 'SIRPA'), 
   exclude = 'CSF1R')
 
 FibrocytesClusters
 ```
+Since, fibrocytes are marrow-derived cells that differentiate into fibroblasts-like phenotypes, they are usually wrong labeled as fibroblasts. Thus, we downloaded using the `getSamples` function all the fibroblasts available from dermis samples in the database (SRA accessions: [SRS3121028](https://www.ncbi.nlm.nih.gov/sra/?term=SRS3121028) and [SRS3121030](https://www.ncbi.nlm.nih.gov/sra/?term=SRS3121030)) [[30464171]](https://pubmed.ncbi.nlm.nih.gov/30464171/).
 ```{r}
 FibrocytesCounts <- getSamples(tissue = 'Dermis', specie = 'Mus musculus', celltype = 'Fibroblasts')
+FibrocytesCounts
 ```
+We merged a total of 2,172 cells and processed them using the Seurat package recommended pipeline (Stuart, et al., 2019). Datasets were integrated using Harmony. 
 ```{r message=FALSE, warning=FALSE}
 FibrocytesCounts <- NormalizeData(FibrocytesCounts, verbose = FALSE)
 FibrocytesCounts <- ScaleData(FibrocytesCounts, verbose = FALSE)
@@ -44,25 +50,35 @@ TSNEPlot(FibrocytesCounts) + theme_bw() + xlab('t-SNE 1') + ylab('t-SNE 2')
 ```{r message=FALSE, warning=FALSE}
 FibrocytesCounts <- FindNeighbors(FibrocytesCounts, reduction = 'harmony', verbose = FALSE)
 FibrocytesCounts <- FindClusters(FibrocytesCounts, verbose = FALSE)
-TSNEPlot(FibrocytesCounts, label = TRUE) + theme_bw() + xlab('t-SNE 1') + ylab('t-SNE 2') + theme(legend.position = 'None')
+TSNEPlot(FibrocytesCounts, label = TRUE) + 
+  theme_bw() + 
+  xlab('t-SNE 1') + 
+  ylab('t-SNE 2') + 
+  theme(legend.position = 'None')
 ```
-
+Corroboration of the expression for the marker genes defining the cellular identity as fibrocytes (*CD34*, *ACTA2*, *COL5A1*, *COL5A2*, *COL5A3*, *FN1*, *FAP*, *SIRPA*, *PTPRC*, *MME*, and *SEMA7A*) was assessed using the Nebulosa package 
 
 ```{r fig.height=5, fig.width=10}
 plot_density(object = FibrocytesCounts, 
-             features = c('ACTA2','CD34', 'COL5A1', 'COL5A2', 'COL5A3', 'FAP'), 
+             features = c('CD34','ACTA2', 'COL5A2', 'SIRPA', 'PTPRC', 'FAP'), 
              joint = FALSE)
 ```
-```{r fig.height=5, fig.width=6}
+```{r fig.height=5, fig.width=10}
 P <- plot_density(object = FibrocytesCounts, 
-                  features = c('ACTA2','CD34', 'COL5A1', 'COL5A2', 'COL5A3', 'FAP'), 
+                  features = c('CD34', 'ACTA2', 'COL5A1', 'COL5A2', 'COL5A3', 'FN1', 'FAP', 'SIRPA', 'PTPRC', 'MME', 'SEMA7A'), 
                   joint = TRUE)
-P[[7]] + theme_bw() + xlab('t-SNE 1') + ylab('t-SNE 2') + theme(legend.position = 'None')
+P[[11]] + theme_bw() + xlab('t-SNE 1') + ylab('t-SNE 2') + theme(legend.position = 'None')
 ```
 
 ```{r}
-DotPlot(object = FibrocytesCounts, scale.by = 'radius', scale = TRUE, dot.min = 0.4, 
-        features = c('ACTA2','CD34', 'COL5A1', 'COL5A2', 'COL5A3', 'FAP')) + 
+DotPlot(object = FibrocytesCounts, 
+        scale.by = 'size', 
+        scale = TRUE, 
+        dot.min = 0.3, 
+        cols = c('white', 'blue'), 
+        col.min = 0, 
+        col.max = 1,
+        features = c('ACTA2', 'FN1', 'CD34', 'COL5A1', 'COL5A2', 'COL5A3', 'FAP', 'SIRPA', 'CSF1R')) + 
   coord_flip()
 ```
 ```{r}
@@ -71,7 +87,11 @@ table(Idents(FibrocytesCounts))
 ```{r message=TRUE, warning=FALSE, results= FALSE}
 deFibrocytes <- FindMarkers(object = FibrocytesCounts, ident.1 = 8, test.use = 'MAST', verbose = FALSE)
 ```
-
+```{r}
+upR_Fibrocytes <- rownames(deFibrocytes[deFibrocytes$avg_log2FC > 1 & deFibrocytes$p_val_adj < 0.05,])
+upR_Enrichment <- enrichr(upR_Fibrocytes, databases = 'BioPlanet_2019')[[1]]
+upR_Enrichment[upR_Enrichment$Adjusted.P.value < 0.05,]
+```
 ```{r message=FALSE, warning=FALSE}
 deFibrocytes$g <- rownames(deFibrocytes)
 deFibrocytes$g[abs(deFibrocytes$avg_log2FC) < 1] <- NA
@@ -90,24 +110,37 @@ ggplot(deFibrocytes, mapping = aes(avg_log2FC, -log10(p_val), label = g)) +
 ```{r message=FALSE, warning=FALSE}
 log2FC <- deFibrocytes$avg_log2FC
 names(log2FC) <- rownames(deFibrocytes)
+set.seed(1)
 enrichmentFibrocytes <- fgseaMultilevel(BIOP, log2FC)
 enrichmentFibrocytes <- enrichmentFibrocytes[enrichmentFibrocytes$padj < 0.05,]
 enrichmentFibrocytes$leadingEdge <- unlist(lapply(enrichmentFibrocytes$leadingEdge, function(X){paste0(X, collapse = ';')}))
-enrichmentFibrocytes[order(enrichmentFibrocytes$NES, decreasing = TRUE),]
+enrichmentFibrocytes <- enrichmentFibrocytes[order(enrichmentFibrocytes$NES, decreasing = TRUE),]
+enrichmentFibrocytes
+```
+
+```{r}
+plotEnrichment(BIOP$`Prostaglandin biosynthesis and regulation`, log2FC) + 
+  geom_line(color = 'black') + 
+  theme_bw() + 
+  ylab('GSEA\nEnrichment Score') +
+  xlab('Gene rank') +
+  labs(title = 'Prostaglandin biosynthesis and regulation', 
+       subtitle = paste0('NES: ', round(enrichmentFibrocytes$NES[1],2), ' ,  P-adj: ', round(enrichmentFibrocytes$padj[1],2)))
 ```
 
 ```{r, warning=FALSE, results= FALSE}
 sseBIOP <- gsva(as.matrix(FibrocytesCounts@assays$RNA@data), BIOP, method = 'ssgsea')
 ```
+
 ```{r}
 cellType <- ifelse(FibrocytesCounts$seurat_clusters %in% 8, 'Fibrocytes', 'Fibroblasts')
 esFibrocytes <- data.frame(ES = sseBIOP['Prostaglandin biosynthesis and regulation',], CT = cellType)
 ggplot(esFibrocytes, aes(CT, ES)) + 
   geom_violin() + 
-  geom_boxplot(width = 0.1) + 
+  geom_boxplot(width = 0.05) + 
   theme_bw() +
   xlab('Cell Type') +
-  ylab('Enrichment Score') +
+  ylab('ssGSEA\nEnrichment Score') +
   labs(title = 'Prostaglandin biosynthesis and regulation', 
        subtitle = expr_t_nonparametric(esFibrocytes, CT, ES))
 ```
