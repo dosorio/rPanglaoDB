@@ -49,7 +49,7 @@ A <- DotPlot(object = FibrocytesCounts,
 # Panel B
 B <- P[[11]] + theme_bw() + xlab('t-SNE 1') + ylab('t-SNE 2') +
   theme(legend.position = 'None') +
-  labs(title = 'Fibrocytes', subtitle = 'CD34+, ACTA2+, COL5A1+, COL5A2+, COL5A3+,\nFAP+, SIRPA+, PTPRC+, MME+, SEMA7A+', tag = 'B') +
+  labs(title = 'Fibrocytes', subtitle = 'CD34+, ACTA2+, COL5A1+, COL5A2+, COL5A3+,\nFN1+, FAP+, SIRPA+, PTPRC+, MME+, SEMA7A+', tag = 'B') +
   theme(plot.title = element_text(face = 2))
 
 deFibrocytes <- FindMarkers(object = FibrocytesCounts, ident.1 = 8, test.use = 'MAST', verbose = FALSE)
