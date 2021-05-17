@@ -168,6 +168,10 @@ In this example, cluster 4 is the one containing 121 Human Lymphatic Endothelial
 ```
 ![cellsHDLEC](https://raw.githubusercontent.com/dosorio/rPanglaoDB/master/inst/plots/cellsHDLEC.png)
 
+Application case
+----------------
+To show the potential of rPanglaoDB for collecting rare cell types by integrating multiple public datasets, we present a biological application collecting and characterizing a set of fibrocytes [here](https://htmlpreview.github.io/?https://raw.githubusercontent.com/dosorio/rPanglaoDB/master/inst/examples/Fibrocytes.nb.html)
+
 Citation
 -------
 To cite package `rPanglaoDB` in publications use:
