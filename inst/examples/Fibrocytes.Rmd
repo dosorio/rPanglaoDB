@@ -20,7 +20,7 @@ BIOP <- gmtPathways('https://maayanlab.cloud/Enrichr/geneSetLibrary?mode=text&li
 ```
 Fibrocytes are marrow-derived cells that can differentiate into fibroblasts from monocyte precursors. These cells exhibit both the inflammatory features of macrophages and the tissue remodeling properties of fibroblasts. They are present at wound sites where they participate in tissue injury repair and remodeling [[21597472]](https://pubmed.ncbi.nlm.nih.gov/21597472/). Due to the lack of an unbiased characterization of their transcriptome, their marker genes are missed in all the databases used by the tools designed to assign cell-types automatically from single-cell RNA-seq data such as [MSigDB](http://www.gsea-msigdb.org/gsea/msigdb/genesets.jsp?collection=C8) [[21546393]](https://pubmed.ncbi.nlm.nih.gov/21546393/), [ClusterMole](https://cran.rstudio.com/web/packages/clustermole/index.html), and [PanglaoDB](https://panglaodb.se/markers.html?cell_type=%27choose%27) [[30951143]](https://pubmed.ncbi.nlm.nih.gov/30951143/).  Fibrocytes differentiate from fibroblasts and macrophages by expressing *CD34* [[8790603](https://pubmed.ncbi.nlm.nih.gov/8790603/), [19834619](https://pubmed.ncbi.nlm.nih.gov/19834619/)]. They differentiate also from macrophages by expressing *ACTA2*, *FAP*, *FN1*, *COL5A1*, *COL5A2*, *COL5A3*, *CD90*, and the lack of *CSF1R*, and also differentiate from fibroblasts by expressing *CHIT1*, *MME*, *SIRPA*, *PTPRC*, and *ICAM1* among others [[21597472]](https://pubmed.ncbi.nlm.nih.gov/21597472/).
 
-Using the `getMarkers` function, we identified a cluster of cells in the [SRS3121028](https://www.ncbi.nlm.nih.gov/sra/?term=SRR6936914) sample derived from skin wound tissues (3 days after scab detachment) expressing *CD34*, *ACTA2*, *FN1*, *Collagen V*, *FAP*, *SIRPA* and the lack of expression of *CSF1R*. Genes that differentiate fibrocytes from macrophages and fibroblasts [[30464171]](https://pubmed.ncbi.nlm.nih.gov/30464171/)(Lim, et al., 2018; Pilling, et al., 2009; Reilkoff, et al., 2011).
+Using the `getMarkers` function, we identified a cluster of cells in the [SRS3121028](https://www.ncbi.nlm.nih.gov/sra/?term=SRR6936914) sample derived from skin wound tissues (3 days after scab detachment) expressing *CD34*, *ACTA2*, *FN1*, *Collagen V*, *FAP*, *SIRPA* and the lack of expression of *CSF1R*. Genes that differentiate fibrocytes from macrophages and fibroblasts [[30464171](https://pubmed.ncbi.nlm.nih.gov/30464171/), [19834619](https://pubmed.ncbi.nlm.nih.gov/19834619/), [21597472](https://pubmed.ncbi.nlm.nih.gov/21597472/)]
 ```{r}
 FibrocytesClusters <- getMarkers(
   include = c('CD34', 'ACTA2', 'FN1', 'COL5A1', 'COL5A2', 'COL5A3', 'FAP', 'SIRPA'), 
@@ -33,7 +33,7 @@ Since, fibrocytes are marrow-derived cells that differentiate into fibroblasts-l
 FibrocytesCounts <- getSamples(tissue = 'Dermis', specie = 'Mus musculus', celltype = 'Fibroblasts')
 FibrocytesCounts
 ```
-We merged a total of 2,172 cells and processed them using the Seurat package recommended pipeline (Stuart, et al., 2019). Datasets were integrated using Harmony. 
+We merged a total of 2,172 cells and processed them using the Seurat package recommended pipeline [[31178118](https://pubmed.ncbi.nlm.nih.gov/31178118/)]. Datasets were integrated using [Harmony](https://github.com/immunogenomics/harmony) [[31740819](https://pubmed.ncbi.nlm.nih.gov/31740819/)]. 
 ```{r message=FALSE, warning=FALSE}
 FibrocytesCounts <- NormalizeData(FibrocytesCounts, verbose = FALSE)
 FibrocytesCounts <- ScaleData(FibrocytesCounts, verbose = FALSE)
