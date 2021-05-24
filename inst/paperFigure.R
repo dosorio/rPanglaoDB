@@ -42,7 +42,9 @@ A <- DotPlot(object = FibrocytesCounts,
              col.min = 0,
              col.max = 1,
              features = c('ACTA2', 'FN1', 'CD34', 'COL5A1', 'COL5A2', 'COL5A3', 'FAP', 'SIRPA', 'CSF1R')) +
-  coord_flip() + theme_bw() + theme(panel.grid = element_blank(), plot.title = element_text(face = 2)) +
+  coord_flip() +
+  theme_bw() +
+  theme(panel.grid = element_blank(), plot.title = element_text(face = 2), axis.text.y = element_text(face = "italic")) +
   labs(title = 'Dermis Fibroblasts', subtitle = 'SRS3121028 + SRS3121030', tag = 'A') +
   xlab('Genes')
 
@@ -50,7 +52,7 @@ A <- DotPlot(object = FibrocytesCounts,
 B <- P[[11]] + theme_bw() + xlab('t-SNE 1') + ylab('t-SNE 2') +
   theme(legend.position = 'None') +
   labs(title = 'Fibrocytes', subtitle = 'CD34+, ACTA2+, COL5A1+, COL5A2+, COL5A3+,\nFN1+, FAP+, SIRPA+, PTPRC+, MME+, SEMA7A+', tag = 'B') +
-  theme(plot.title = element_text(face = 2))
+  theme(plot.title = element_text(face = 2), plot.subtitle = element_text(face = 'italic'))
 
 deFibrocytes <- FindMarkers(object = FibrocytesCounts, ident.1 = 8, test.use = 'MAST', verbose = FALSE)
 
@@ -65,13 +67,15 @@ deFibrocytes$color[deFibrocytes$avg_log2FC < -1] <- 'blue'
 # Panel C
 C <- ggplot(deFibrocytes, mapping = aes(avg_log2FC, -log10(p_val), label = g)) +
   geom_point(color = deFibrocytes$color, alpha = 0.5) +
-  geom_text_repel() +
+  geom_text_repel(fontface = "italic") +
   theme_bw() + xlab(log[2]~(Avg~Fold-change)) +
   ylab(-log[10]~(P-value)) + labs(tag = 'C') +
   labs(title = 'Fibocytes - Fibroblasts MAST Differential Expression') +
   theme(plot.title = element_text(face = 2))
 
 # Panel D
+log2FC <- deFibrocytes$avg_log2FC
+names(log2FC) <- rownames(deFibrocytes)
 D <- plotEnrichment(BIOP$`Prostaglandin biosynthesis and regulation`, log2FC) +
   theme_bw() +
   labs(title = 'Prostaglandin biosynth.\nand regulation', tag = 'D') +
