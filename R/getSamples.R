@@ -85,7 +85,11 @@ getSamples <- function(sra = 'All', srs = 'All', tissue = 'All', protocol = 'All
   }
 
   dataSets <- pbapply::pbapply(sampleList,1, function(X){
-    oConnection <- url(paste0("https://panglaodb.se/data_dl.php?sra=",X[1],"&srs=",X[2],"&filetype=R&datatype=readcounts"))
+    oConnection <- paste0("https://panglaodb.se/data_dl.php?sra=",X[1],"&srs=",X[2],"&filetype=R&datatype=readcounts")
+    oConnection <-  url(oConnection, headers = list(
+      `Connection` = 'keep-alive',
+      `User-Agent` =  "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:93.0) Gecko/20100101 Firefox/93.0"
+    ))
     try(load(oConnection), silent = TRUE)
     if(exists('sm')){
       rownames(sm) <- unlist(lapply(strsplit(rownames(sm), '-ENS|_ENS'), function(X){X[1]}))
