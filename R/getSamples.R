@@ -97,7 +97,9 @@ getSamples <- function(sra = 'All', srs = 'All', tissue = 'All', protocol = 'All
       cNames <- getSampleComposition(srs = as.character(X[2]), verbose = FALSE)
       rownames(cNames) <- cNames$Cluster
       tempFile <- tempfile()
-      download.file(paste0('https://panglaodb.se/data_dl.php?sra=',X[1],'&srs=',X[2],'&datatype=clusters&filetype=txt'), destfile = tempFile, headers = list(
+      download.file(paste0('https://panglaodb.se/data_dl.php?sra=',X[1],'&srs=',X[2],'&datatype=clusters&filetype=txt'),
+                    destfile = tempFile, quiet = TRUE,
+                    headers = list(
         `Connection` = 'keep-alive',
         `User-Agent` =  "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:93.0) Gecko/20100101 Firefox/93.0"))
       cClusters <- utils::read.table(tempFile, row.names = 1)
